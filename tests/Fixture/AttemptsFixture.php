@@ -1,4 +1,5 @@
 <?php
+
 namespace LoginAttempts\Test\Fixture;
 
 use Cake\TestSuite\Fixture\TestFixture;
@@ -41,75 +42,6 @@ class AttemptsFixture extends TestFixture
      * @var array
      */
     public $records = [
-        [
-            'id' => 1,
-            'ip' => 'Lorem ipsum dolor sit amet',
-            'action' => 'Lorem ipsum dolor sit amet',
-            'expires' => 1433235556,
-            'created_at' => 1433235556
-        ],
-        [
-            'id' => 2,
-            'ip' => 'Lorem ipsum dolor sit amet',
-            'action' => 'Lorem ipsum dolor sit amet',
-            'expires' => 1433235556,
-            'created_at' => 1433235556
-        ],
-        [
-            'id' => 3,
-            'ip' => 'Lorem ipsum dolor sit amet',
-            'action' => 'Lorem ipsum dolor sit amet',
-            'expires' => 1433235556,
-            'created_at' => 1433235556
-        ],
-        [
-            'id' => 4,
-            'ip' => 'Lorem ipsum dolor sit amet',
-            'action' => 'Lorem ipsum dolor sit amet',
-            'expires' => 1433235556,
-            'created_at' => 1433235556
-        ],
-        [
-            'id' => 5,
-            'ip' => 'Lorem ipsum dolor sit amet',
-            'action' => 'Lorem ipsum dolor sit amet',
-            'expires' => 1433235556,
-            'created_at' => 1433235556
-        ],
-        [
-            'id' => 6,
-            'ip' => 'Lorem ipsum dolor sit amet',
-            'action' => 'Lorem ipsum dolor sit amet',
-            'expires' => 1433235556,
-            'created_at' => 1433235556
-        ],
-        [
-            'id' => 7,
-            'ip' => 'Lorem ipsum dolor sit amet',
-            'action' => 'Lorem ipsum dolor sit amet',
-            'expires' => 1433235556,
-            'created_at' => 1433235556
-        ],
-        [
-            'id' => 8,
-            'ip' => 'Lorem ipsum dolor sit amet',
-            'action' => 'Lorem ipsum dolor sit amet',
-            'expires' => 1433235556,
-            'created_at' => 1433235556
-        ],
-        [
-            'id' => 9,
-            'ip' => 'Lorem ipsum dolor sit amet',
-            'action' => 'Lorem ipsum dolor sit amet',
-            'expires' => 1433235556,
-            'created_at' => 1433235556
-        ],
-        [
-            'id' => 10,
-            'ip' => 'Lorem ipsum dolor sit amet',
-            'action' => 'Lorem ipsum dolor sit amet',
-            'expires' => 1433235556,
-            'created_at' => 1433235556
-        ],
     ];
+
 }
