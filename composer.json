@@ -1,6 +1,6 @@
 {
-    "name": "your-name-here/LoginAttempts",
-    "description": "LoginAttempts plugin for CakePHP",
+    "name": "nojimage/cakephp-login-attempts",
+    "description": "LoginAttempts plugin for CakePHP 3",
     "type": "cakephp-plugin",
     "require": {
         "php": ">=5.4.16",
