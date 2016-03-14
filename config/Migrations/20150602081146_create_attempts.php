@@ -17,24 +17,24 @@ class CreateAttempts extends AbstractMigration
         $table = $this->table('attempts');
         $table->addColumn('ip', 'string', [
             'default' => null,
-            'limit' => 45,
-            'null' => false,
+            'limit'   => 45,
+            'null'    => false,
         ]);
         $table->addColumn('action', 'string', [
             'default' => null,
-            'limit' => 64,
-            'null' => false,
+            'limit'   => 64,
+            'null'    => false,
         ]);
         $table->addColumn('expires', 'timestamp', [
             'default' => null,
-            'null' => false,
+            'null'    => false,
         ]);
         $table->addColumn('created_at', 'timestamp', [
-            'default' => null,
-            'null' => false,
+            'default' => 'CURRENT_TIMESTAMP',
+            'update'  => '',
+            'null'    => false,
         ]);
         $table->addIndex(['ip', 'action'], ['name' => 'IX_ip_action']);
         $table->create();
     }
-
 }
