@@ -9,8 +9,8 @@ use Cake\ORM\Entity;
  *
  * @property string $ip
  * @property string $action
- * @property \Carbon\Carbon $expires
- * @property \Carbon\Carbon $created_at
+ * @property \Cake\I18n\Time $expires
+ * @property \Cake\I18n\Time $created_at
  */
 class Attempt extends Entity
 {

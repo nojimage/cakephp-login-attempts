@@ -7,7 +7,7 @@ use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 use LoginAttempts\Model\Entity\Attempt;
-use Carbon\Carbon;
+use Cake\I18n\Time;
 
 /**
  * Attempts Model
@@ -83,8 +83,8 @@ class AttemptsTable extends Table
         $attempt = $this->newEntity([
             'ip' => $ip,
             'action' => $action,
-            'expires' => Carbon::parse($duration),
-            'created_at' => Carbon::now(),
+            'expires' => Time::parse($duration),
+            'created_at' => Time::now(),
         ]);
         return $this->save($attempt);
     }
@@ -102,7 +102,7 @@ class AttemptsTable extends Table
         $count = $this->find()->where([
                 'ip' => $ip,
                 'action' => $action,
-                'expires >=' => Carbon::now(),
+                'expires >=' => Time::now(),
             ])->count();
         return $count < $limit;
     }
@@ -130,7 +130,7 @@ class AttemptsTable extends Table
     public function cleanup()
     {
         return $this->deleteAll([
-                'expires <' => Carbon::now(),
+                'expires <' => Time::now(),
         ]);
     }
 
