@@ -10,7 +10,22 @@ The recommended way to install composer packages is:
 composer require nojimage/cakephp-login-attempts
 ```
 
-### use LoginAttempts.FormAuthenticate
+in `config/bootstrap.php`
+
+```
+Plugin::load('LoginAttempts');
+```
+
+And apply migration file.
+
+```
+bin/cake migrations migrate -p LoginAttempts
+```
+
+### Usage
+
+Load `LoginAttempts.Form` authenticate instead `Form`.
+
 ```
         $this->loadComponent('Auth', [
             'authenticate' => [
