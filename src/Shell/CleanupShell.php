@@ -20,7 +20,7 @@ class CleanupShell extends Shell
     {
         $parser = parent::getOptionParser();
 
-        $parser->getDescription('Cleaning up attempts table, reset attempt count.');
+        $parser->getDescription('Cleaning up attempts table, delete expired record.');
 
         return $parser;
     }

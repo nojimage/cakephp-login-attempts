@@ -1,8 +1,12 @@
 <?php
+
 namespace LoginAttempts\Test\TestCase\Shell;
 
 use Cake\Console\ConsoleIo;
+use Cake\I18n\Time;
+use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use LoginAttempts\Model\Table\AttemptsTable;
 use LoginAttempts\Shell\CleanupShell;
 
 /**
@@ -10,6 +14,25 @@ use LoginAttempts\Shell\CleanupShell;
  */
 class CleanupShellTest extends TestCase
 {
+
+    /**
+     * Fixtures
+     *
+     * @var array
+     */
+    public $fixtures = [
+        'plugin.LoginAttempts.Shell\CleanupShell\Attempts'
+    ];
+
+    /**
+     * @var AttemptsTable
+     */
+    private $Attempts;
+
+    /**
+     * @var CleanupShell
+     */
+    private $Cleanup;
 
     /**
      * setUp method
@@ -21,6 +44,7 @@ class CleanupShellTest extends TestCase
         parent::setUp();
         $this->io = $this->getMockBuilder(ConsoleIo::class)->getMock();
         $this->Cleanup = new CleanupShell($this->io);
+        $this->Attempts = TableRegistry::get('Attempts', ['className' => AttemptsTable::class]);
     }
 
     /**
@@ -31,6 +55,7 @@ class CleanupShellTest extends TestCase
     public function tearDown()
     {
         unset($this->Cleanup);
+        unset($this->Attempts);
 
         parent::tearDown();
     }
@@ -42,6 +67,12 @@ class CleanupShellTest extends TestCase
      */
     public function testMain()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        Time::setTestNow('2017-01-01 12:23:34');
+        $this->Cleanup->main();
+        $this->assertCount(1, $this->Attempts->find()->all());
+
+        Time::setTestNow('2017-01-02 12:23:35');
+        $this->Cleanup->main();
+        $this->assertCount(0, $this->Attempts->find()->all(), 'cleanup expired');
     }
 }
