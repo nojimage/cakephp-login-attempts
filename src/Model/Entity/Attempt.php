@@ -8,6 +8,7 @@ use DateTimeInterface;
 /**
  * Attempt Entity.
  *
+ * @property int $id
  * @property string $ip
  * @property string $action
  * @property DateTimeInterface $expires

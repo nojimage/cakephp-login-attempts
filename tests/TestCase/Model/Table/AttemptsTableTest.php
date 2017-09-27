@@ -2,8 +2,10 @@
 
 namespace LoginAttempts\Test\TestCase\Model\Table;
 
+use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use LoginAttempts\Model\Entity\Attempt;
 use LoginAttempts\Model\Table\AttemptsTable;
 
 /**
@@ -45,6 +47,7 @@ class AttemptsTableTest extends TestCase
     public function tearDown()
     {
         unset($this->Attempts);
+        Time::setTestNow();
         parent::tearDown();
     }
 
@@ -94,7 +97,16 @@ class AttemptsTableTest extends TestCase
      */
     public function testFail()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        Time::setTestNow('2017-01-01 12:23:34');
+        $result = $this->Attempts->fail('192.168.1.11', 'Users.login', '+ 1days');
+
+        $this->assertInstanceOf(Attempt::class, $result);
+
+        // check saved
+        $saved = $this->Attempts->get($result->id);
+        $this->assertSame('192.168.1.11', $saved->ip);
+        $this->assertSame('Users.login', $saved->action);
+        $this->assertSame('2017-01-02 12:23:34', $saved->expires->format('Y-m-d H:i:s'));
     }
 
     /**
@@ -104,7 +116,32 @@ class AttemptsTableTest extends TestCase
      */
     public function testCheck()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        Time::setTestNow('2017-01-01 12:23:34');
+
+        $result = $this->Attempts->check('192.168.1.11', 'Users.login', 1);
+        $this->assertTrue($result, 'table is empty, then true');
+
+        //
+        $this->Attempts->fail('192.168.1.11', 'Users.login', '+ 1days');
+        $result = $this->Attempts->check('192.168.1.11', 'Users.login', 1);
+        $this->assertFalse($result, 'has one record, then false');
+
+        //
+        $result = $this->Attempts->check('192.168.1.11', 'Users.login', 2);
+        $this->assertTrue($result, 'below limitation count');
+        //
+        $result = $this->Attempts->check('192.168.1.12', 'Users.login', 1);
+        $this->assertTrue($result, 'other ip access');
+        //
+        $result = $this->Attempts->check('192.168.1.11', 'Administrators.login', 1);
+        $this->assertTrue($result, 'other action request');
+        //
+        Time::setTestNow('2017-01-02 12:23:34');
+        $result = $this->Attempts->check('192.168.1.11', 'Users.login', 1);
+        $this->assertFalse($result, 'unexpired');
+        Time::setTestNow('2017-01-02 12:23:35');
+        $result = $this->Attempts->check('192.168.1.11', 'Users.login', 1);
+        $this->assertTrue($result, 'expired');
     }
 
     /**
@@ -114,7 +151,14 @@ class AttemptsTableTest extends TestCase
      */
     public function testReset()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        Time::setTestNow('2017-01-01 12:23:34');
+
+        $this->Attempts->fail('192.168.1.11', 'Users.login', '+ 1days');
+        $this->Attempts->fail('192.168.1.12', 'Users.login', '+ 1days');
+
+        $this->Attempts->reset('192.168.1.11', 'Users.login');
+
+        $this->assertCount(1, $this->Attempts->find()->all());
     }
 
     /**
@@ -124,6 +168,17 @@ class AttemptsTableTest extends TestCase
      */
     public function testCleanup()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        Time::setTestNow('2017-01-01 12:23:34');
+
+        $this->Attempts->fail('192.168.1.11', 'Users.login', '+ 1days');
+        $this->Attempts->fail('192.168.1.12', 'Users.login', '+ 1days');
+
+        Time::setTestNow('2017-01-01 12:23:34');
+        $this->Attempts->cleanup();
+        $this->assertCount(2, $this->Attempts->find()->all());
+
+        Time::setTestNow('2017-01-02 12:23:35');
+         $this->Attempts->cleanup();
+        $this->assertCount(0, $this->Attempts->find()->all(), 'cleanup expired');
     }
 }
