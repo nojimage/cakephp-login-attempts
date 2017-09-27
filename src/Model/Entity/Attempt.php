@@ -26,5 +26,4 @@ class Attempt extends Entity
         'expires' => true,
         'created_at' => true,
     ];
-
 }

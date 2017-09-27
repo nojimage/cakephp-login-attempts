@@ -22,5 +22,4 @@ class CleanupShell extends Shell
         TableRegistry::get('LoginAttempts.Attempts')->cleanup();
         $this->out('Cleaning up attempts table.');
     }
-
 }

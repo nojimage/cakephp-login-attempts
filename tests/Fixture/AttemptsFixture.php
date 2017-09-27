@@ -43,5 +43,4 @@ class AttemptsFixture extends TestFixture
      */
     public $records = [
     ];
-
 }
