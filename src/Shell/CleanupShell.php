@@ -28,7 +28,7 @@ class CleanupShell extends Shell
     /**
      * main() method.
      *
-     * @return bool|int Success or error code.
+     * @return void
      */
     public function main()
     {
