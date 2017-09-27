@@ -104,7 +104,7 @@ class FormAuthenticateTest extends TestCase
      */
     public function testAuthenticateFailure()
     {
-        Time::setTestNow('2017-01-01 12:23:34');
+        Time::setTestNow(Time::parse('2017-01-01 12:23:34'));
 
         $request = new Request(['post' => [
                 'username' => 'foo',
@@ -129,7 +129,7 @@ class FormAuthenticateTest extends TestCase
      */
     public function testAuthenticateLimitAttempts()
     {
-        Time::setTestNow('2017-01-01 12:23:34');
+        Time::setTestNow(Time::parse('2017-01-01 12:23:34'));
 
         $request = new Request(['post' => [
                 'username' => 'foo',
@@ -141,7 +141,7 @@ class FormAuthenticateTest extends TestCase
         $this->assertFalse($result);
 
         // expired
-        Time::setTestNow('2017-01-02 12:23:35');
+        Time::setTestNow(Time::parse('2017-01-02 12:23:35'));
         $request = new Request(['post' => [
                 'username' => 'foo',
                 'password' => 'password',
@@ -157,7 +157,7 @@ class FormAuthenticateTest extends TestCase
      */
     public function testAuthenticateSuccess()
     {
-        Time::setTestNow('2017-01-01 12:23:34');
+        Time::setTestNow(Time::parse('2017-01-01 12:23:34'));
 
         $this->assertCount(1, $this->Attempts->find()->where(['ip' => '192.168.1.22'])->all());
         $request = new Request(['post' => [
