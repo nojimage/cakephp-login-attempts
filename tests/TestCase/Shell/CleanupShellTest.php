@@ -1,6 +1,7 @@
 <?php
 namespace LoginAttempts\Test\TestCase\Shell;
 
+use Cake\Console\ConsoleIo;
 use Cake\TestSuite\TestCase;
 use LoginAttempts\Shell\CleanupShell;
 
@@ -18,7 +19,7 @@ class CleanupShellTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->io = $this->getMock('Cake\Console\ConsoleIo');
+        $this->io = $this->getMockBuilder(ConsoleIo::class)->getMock();
         $this->Cleanup = new CleanupShell($this->io);
     }
 
