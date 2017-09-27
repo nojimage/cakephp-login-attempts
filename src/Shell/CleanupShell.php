@@ -2,15 +2,28 @@
 
 namespace LoginAttempts\Shell;
 
+use Cake\Console\ConsoleOptionParser;
 use Cake\Console\Shell;
 use Cake\ORM\TableRegistry;
-use LoginAttempts\Model\Table\AttemptsTable;
 
 /**
- * Cleanup shell command.
+ * Cleaning up attempts table shell command.
  */
 class CleanupShell extends Shell
 {
+    /**
+     * Gets the option parser instance and configures it.
+     *
+     * @return ConsoleOptionParser
+     */
+    public function getOptionParser()
+    {
+        $parser = parent::getOptionParser();
+
+        $parser->getDescription('Cleaning up attempts table, reset attempt count.');
+
+        return $parser;
+    }
 
     /**
      * main() method.

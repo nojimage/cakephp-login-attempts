@@ -3,14 +3,15 @@
 namespace LoginAttempts\Model\Entity;
 
 use Cake\ORM\Entity;
+use DateTimeInterface;
 
 /**
  * Attempt Entity.
  *
  * @property string $ip
  * @property string $action
- * @property \Cake\I18n\Time $expires
- * @property \Cake\I18n\Time $created_at
+ * @property DateTimeInterface $expires
+ * @property DateTimeInterface $created_at
  */
 class Attempt extends Entity
 {
