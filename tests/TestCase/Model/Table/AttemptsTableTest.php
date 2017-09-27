@@ -1,4 +1,5 @@
 <?php
+
 namespace LoginAttempts\Test\TestCase\Model\Table;
 
 use Cake\ORM\TableRegistry;
@@ -21,6 +22,11 @@ class AttemptsTableTest extends TestCase
     ];
 
     /**
+     * @var AttemptsTable
+     */
+    private $Attempts;
+
+    /**
      * setUp method
      *
      * @return void
@@ -28,8 +34,7 @@ class AttemptsTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('Attempts') ? [] : ['className' => 'LoginAttempts\Model\Table\AttemptsTable'];
-        $this->Attempts = TableRegistry::get('Attempts', $config);
+        $this->Attempts = TableRegistry::get('Attempts', ['className' => AttemptsTable::class]);
     }
 
     /**
@@ -40,28 +45,46 @@ class AttemptsTableTest extends TestCase
     public function tearDown()
     {
         unset($this->Attempts);
-
         parent::tearDown();
-    }
-
-    /**
-     * Test initialize method
-     *
-     * @return void
-     */
-    public function testInitialize()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
     }
 
     /**
      * Test validationDefault method
      *
-     * @return void
+     * @dataProvider dataValidation
      */
-    public function testValidationDefault()
+    public function testValidation($field, $data, $expects)
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $entity = $this->Attempts->newEntity([
+            $field => $data,
+        ]);
+
+        if ($expects === true) {
+            $this->assertEmpty($entity->errors($field));
+        } else {
+            $this->assertSame($expects, current($entity->errors($field)));
+        }
+    }
+
+    /**
+     * test data for testValidation
+     *
+     * @return array
+     */
+    public function dataValidation()
+    {
+        return [
+            ['ip', null, 'This field cannot be left empty'],
+            ['ip', 'invalid ip', 'invalid IP address'],
+            ['ip', '192.168.1.1', true],
+            ['ip', '256.1.1.1', 'invalid IP address'],
+            ['action', null, 'This field cannot be left empty'],
+            ['action', 'index', true],
+            ['expires', null, 'This field cannot be left empty'],
+            ['expires', '2017-12-31 00:00:00', true],
+            ['created_at', null, 'This field cannot be left empty'],
+            ['created_at', '2017-01-01 00:00:00', true],
+        ];
     }
 
     /**

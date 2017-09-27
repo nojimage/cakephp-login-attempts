@@ -5,9 +5,17 @@ namespace LoginAttempts\Model\Table;
 use Cake\I18n\Time;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use LoginAttempts\Model\Entity\Attempt;
 
 /**
  * Attempts Model
+ *
+ * @method Attempt newEntity($data = null, array $options = [])
+ * @method Attempt[] newEntities(array $data, array $options = [])
+ * @method Attempt patchEntity(EntityInterface $entity, array $data, array $options = [])
+ * @method Attempt[] patchEntities($entities, array $data, array $options = [])
+ * @method Attempt get($primaryKey, $options = [])
+ * @method Attempt|bool save(EntityInterface $entity, $options = [])
  */
 class AttemptsTable extends Table
 {
