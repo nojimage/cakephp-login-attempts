@@ -2,6 +2,7 @@
 
 namespace LoginAttempts\Model\Table;
 
+use Cake\Datasource\EntityInterface;
 use Cake\I18n\Time;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -28,9 +29,9 @@ class AttemptsTable extends Table
      */
     public function initialize(array $config)
     {
-        $this->table('attempts');
-        $this->displayField('ip');
-        $this->primaryKey('id');
+        $this->setTable('attempts');
+        $this->setDisplayField('ip');
+        $this->setPrimaryKey('id');
         $this->addBehavior('Timestamp', [
             'events' => [
                 'Model.beforeSave' => [

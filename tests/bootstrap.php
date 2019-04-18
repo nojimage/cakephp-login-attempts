@@ -1,5 +1,6 @@
 <?php
 
+use Cake\Core\Configure;
 use Cake\Core\Plugin;
 
 /**
@@ -23,10 +24,14 @@ $findRoot = function ($root) {
 $root = $findRoot(__FILE__);
 unset($findRoot);
 
+$here = __DIR__;
+
 chdir($root);
-if (file_exists($root . '/config/bootstrap.php')) {
-    require $root . '/config/bootstrap.php';
-} else {
-    require $root . '/vendor/cakephp/cakephp/tests/bootstrap.php';
-    Plugin::load('LoginAttempts', ['path' => dirname(dirname(__FILE__)) . DS]);
+require $root . '/vendor/cakephp/cakephp/tests/bootstrap.php';
+
+// Disable deprecations for now when using 3.6
+if (version_compare(Configure::version(), '3.6.0', '>=')) {
+    error_reporting(E_ALL ^ E_USER_DEPRECATED);
 }
+Plugin::load('LoginAttempts', ['path' => dirname(__DIR__) . DS]);
+error_reporting(E_ALL);

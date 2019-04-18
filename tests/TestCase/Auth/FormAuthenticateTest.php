@@ -3,14 +3,15 @@
 namespace LoginAttempts\Test\TestCase\Auth;
 
 use Cake\Controller\ComponentRegistry;
+use Cake\Http\Response;
+use Cake\Http\ServerRequest;
 use Cake\I18n\Time;
-use Cake\Network\Request;
-use Cake\Network\Response;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Security;
 use LoginAttempts\Auth\FormAuthenticate;
+use LoginAttempts\Model\Entity\Attempt;
 use LoginAttempts\Model\Table\AttemptsTable;
 
 /**
@@ -18,7 +19,6 @@ use LoginAttempts\Model\Table\AttemptsTable;
  */
 class FormAuthenticateTest extends TestCase
 {
-
     /**
      * Fixtures
      *
@@ -69,21 +69,17 @@ class FormAuthenticateTest extends TestCase
         parent::setUp();
         $this->Collection = $this->getMockBuilder(ComponentRegistry::class)->getMock();
         $this->auth = new FormAuthenticate($this->Collection, [
-            'userModel' => 'AuthUsers'
+            'userModel' => 'AuthUsers',
         ]);
-        $password = password_hash('password', PASSWORD_DEFAULT);
 
-        TableRegistry::clear();
         // set password
         $this->Users = TableRegistry::get('AuthUsers');
-        $this->Users->updateAll(['password' => $password], []);
-
         $this->Attempts = TableRegistry::get('LoginAttempts.Attempts');
 
         $this->response = $this->getMockBuilder(Response::class)->getMock();
 
-        $this->salt = Security::salt();
-        Security::salt('DYhG93b0qyJfIxfs2guVoUubWwvniR2G0FgaC9mi');
+        $this->salt = Security::getSalt();
+        Security::setSalt('DYhG93b0qyJfIxfs2guVoUubWwvniR2G0FgaC9mi');
     }
 
     /**
@@ -91,10 +87,8 @@ class FormAuthenticateTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->auth);
-        unset($this->Users);
-        unset($this->Attempts);
-        Security::salt($this->salt);
+        unset($this->auth, $this->Users, $this->Attempts);
+        Security::setSalt($this->salt);
         Time::setTestNow();
         parent::tearDown();
     }
@@ -106,17 +100,19 @@ class FormAuthenticateTest extends TestCase
     {
         Time::setTestNow(Time::parse('2017-01-01 12:23:34'));
 
-        $request = new Request(['post' => [
+        $request = (new ServerRequest([
+            'post' => [
                 'username' => 'foo',
                 'password' => 'invalid',
-        ]]);
-        $request->env('REMOTE_ADDR', '192.168.1.12');
+            ],
+        ]))->withEnv('REMOTE_ADDR', '192.168.1.12');
 
         $result = $this->auth->authenticate($request, $this->response);
         $this->assertFalse($result);
 
         // created attempt record on auth failure
         $record = $this->Attempts->find()->where(['ip' => '192.168.1.12'])->first();
+        /* @var $record Attempt */
         $this->assertNotEmpty($record, 'created attempt record on auth failure');
 
         $this->assertSame('192.168.1.12', $record->ip);
@@ -131,22 +127,24 @@ class FormAuthenticateTest extends TestCase
     {
         Time::setTestNow(Time::parse('2017-01-01 12:23:34'));
 
-        $request = new Request(['post' => [
+        $request = (new ServerRequest([
+            'post' => [
                 'username' => 'foo',
                 'password' => 'password',
-        ]]);
-        $request->env('REMOTE_ADDR', '192.168.1.11');
+            ],
+        ]))->withEnv('REMOTE_ADDR', '192.168.1.11');
 
         $result = $this->auth->authenticate($request, $this->response);
         $this->assertFalse($result);
 
         // expired
         Time::setTestNow(Time::parse('2017-01-02 12:23:35'));
-        $request = new Request(['post' => [
+        $request = (new ServerRequest([
+            'post' => [
                 'username' => 'foo',
                 'password' => 'password',
-        ]]);
-        $request->env('REMOTE_ADDR', '192.168.1.11');
+            ],
+        ]))->withEnv('REMOTE_ADDR', '192.168.1.11');
 
         $result = $this->auth->authenticate($request, $this->response);
         $this->assertSame(['id' => 1, 'username' => 'foo'], $result);
@@ -159,12 +157,16 @@ class FormAuthenticateTest extends TestCase
     {
         Time::setTestNow(Time::parse('2017-01-01 12:23:34'));
 
-        $this->assertCount(1, $this->Attempts->find()->where(['ip' => '192.168.1.22'])->all());
-        $request = new Request(['post' => [
+        $result = $this->Attempts->find()->where(['ip' => '192.168.1.22'])->all();
+        $this->assertNotNull($result);
+        $this->assertCount(1, $result);
+        $request = new ServerRequest([
+            'post' => [
                 'username' => 'foo',
                 'password' => 'password',
-        ]]);
-        $request->env('REMOTE_ADDR', '192.168.1.22');
+            ],
+        ]);
+        $request = $request->withEnv('REMOTE_ADDR', '192.168.1.22');
 
         $result = $this->auth->authenticate($request, $this->response);
         $this->assertNotEmpty($result);
