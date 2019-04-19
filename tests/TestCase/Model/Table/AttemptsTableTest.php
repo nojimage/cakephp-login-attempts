@@ -20,7 +20,7 @@ class AttemptsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.login_attempts.attempts'
+        'plugin.LoginAttempts.Attempts'
     ];
 
     /**
@@ -63,9 +63,9 @@ class AttemptsTableTest extends TestCase
         ]);
 
         if ($expects === true) {
-            $this->assertEmpty($entity->errors($field));
+            $this->assertEmpty($entity->getError($field));
         } else {
-            $this->assertSame($expects, current($entity->errors($field)));
+            $this->assertSame($expects, current($entity->getError($field)));
         }
     }
 

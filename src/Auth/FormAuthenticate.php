@@ -4,8 +4,8 @@ namespace LoginAttempts\Auth;
 
 use Cake\Auth\FormAuthenticate as BaseFormAuthenticate;
 use Cake\Controller\ComponentRegistry;
-use Cake\Network\Request;
-use Cake\Network\Response;
+use Cake\Http\Response;
+use Cake\Http\ServerRequest;
 use Cake\ORM\TableRegistry;
 use LoginAttempts\Model\Table\AttemptsTable;
 
@@ -38,35 +38,35 @@ class FormAuthenticate extends BaseFormAuthenticate
      */
     protected function _getAction()
     {
-        return $this->config('userModel') . '.' . $this->config('attemptAction');
+        return $this->getConfig('userModel') . '.' . $this->getConfig('attemptAction');
     }
 
     /**
      * authenticate & check attempt counts
      *
-     * @param Request $request The request that contains login information.
+     * @param ServerRequest $request The request that contains login information.
      * @param Response $response Unused response object.
      * @return mixed False on login failure. An array of User data on success.
      */
-    public function authenticate(Request $request, Response $response)
+    public function authenticate(ServerRequest $request, Response $response)
     {
         $ip = $request->clientIp();
         $action = $this->_getAction();
-        $attemtps = TableRegistry::get('LoginAttempts.Attempts');
-        /* @var $attemtps AttemptsTable */
+        $attempts = TableRegistry::getTableLocator()->get('LoginAttempts.Attempts');
+        /* @var $attempts AttemptsTable */
 
         // check attempts
-        if (!$attemtps->check($ip, $action, $this->config('attemptLimit'))) {
+        if (!$attempts->check($ip, $action, $this->getConfig('attemptLimit'))) {
             return false;
         }
 
         $user = parent::authenticate($request, $response);
         if ($user) {
             // on success clear attempts
-            $attemtps->reset($ip, $action);
+            $attempts->reset($ip, $action);
         } else {
             // on failure record attempts
-            $attemtps->fail($ip, $action, $this->config('attemptDuration'));
+            $attempts->fail($ip, $action, $this->getConfig('attemptDuration'));
         }
 
         return $user;

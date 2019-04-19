@@ -15,45 +15,49 @@
     </a>
 </p>
 
-## Requirements
+このプラグインは、フォームログインの失敗を検知して一定期間内に同一IPから複数回のログイン失敗が発生した場合、以降のログイン処理をブロックします。
+
+## 必要要件
 
 - CakePHP >= 3.5
 
-## Installation
+## インストール
 
-You can install this plugin into your CakePHP application using [composer](http://getcomposer.org).
+[composer](http://getcomposer.org) を使用してインストールできます。
 
-The recommended way to install composer packages is:
+以下のようにして、Composer経由でプラグインをCakePHPアプリケーションへ追加します:
 
 ```
 composer require nojimage/cakephp-login-attempts
 ```
 
-### Load plugin
+アプリケーションの `config/bootstrap.php` ファイルへ、次の行を追加します:
 
-(CakePHP >= 3.6.0) Load the plugin by adding the following statement in your project's `src/Application.php`:
+### プラグインのロード
+
+(CakePHP 3.6.0 以降) アプリケーションの `src/Application.php` に、次の行を追加してプラグインをロードします:
 
 ```
 $this->addPlugin('LoginAttempts');
 ```
 
-(CakePHP <= 3.5.x) Load the plugin by adding the following statement in your project's `config/bootstrap.php` file:
+(CakePHP 3.5.x 以前) アプリケーションの `config/bootstrap.php` に、次の行を追加してプラグインをロードします:
 
 ```
 Plugin::load('LoginAttempts');
 ```
 
-### Create table
+### テーブルの作成
 
-run migration command:
+マイグレーションを実行し、データベースへ必要なテーブルを作成します:
 
 ```
 bin/cake migrations migrate -p LoginAttempts
 ```
 
-### Usage
+### 使用方法
 
-Use `LoginAttempts.Form` authenticate instead of `Form`.
+`Form` 認証ハンドラーの代わりに `LoginAttempts.Form` を使用してください。
 
 ```
         $this->loadComponent('Auth', [
@@ -67,25 +71,22 @@ Use `LoginAttempts.Form` authenticate instead of `Form`.
         ]);
 ```
 
-### LoginAttempts.Form Options
+### LoginAttempts.Form のオプション
 
 #### `attemptLimit`
 
-If the num of login failures of the user exceeds `attemptLimit` during `attemptDuration`,
-the user's login is not permitted.
+`attemptDuration` の間にログイン失敗回数が `attemptLimit` を超えた場合、ログインを許可しません。
 
 default: `5`
 
 #### `attemptDuration`
 
-If the num of login failures of the user exceeds `attemptLimit` during `attemptDuration`,
-the user's login is not permitted.
+`attemptDuration` の間にログイン失敗回数が `attemptLimit` を超えた場合、ログインを許可しません。
 
 default: `'+5 minutes'`
 
 #### `attemptAction`
 
-The number of attempts is stored separately for this key.
-Use when there are multiple login forms and you want to set restrictions separately.
+試行回数はこのキー別に保存されます。ログインフォームが複数あり、それぞれ別個に制限を設けたい場合に使用します。
 
 default: `'login'`

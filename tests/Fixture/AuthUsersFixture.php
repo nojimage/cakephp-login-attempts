@@ -28,14 +28,24 @@ class AuthUsersFixture extends TestFixture
     ];
     // @codingStandardsIgnoreEnd
 
-    /**
-     * Records
-     *
-     * @var array
-     */
-    public $records = [
-        ['id' => 1, 'username' => 'foo', 'password' => 'not use'],
-        ['id' => 2, 'username' => 'bar', 'password' => 'not use'],
-        ['id' => 3, 'username' => 'boo', 'password' => 'not use'],
-    ];
+    public function init()
+    {
+        parent::init();
+        $this->records = [];
+        $this->records[] = [
+            'id' => 1,
+            'username' => 'foo',
+            'password' => password_hash('password', PASSWORD_DEFAULT),
+        ];
+        $this->records[] = [
+            'id' => 2,
+            'username' => 'bar',
+            'password' => password_hash('password', PASSWORD_DEFAULT),
+        ];
+        $this->records[] = [
+            'id' => 3,
+            'username' => 'boo',
+            'password' => password_hash('password', PASSWORD_DEFAULT),
+        ];
+    }
 }

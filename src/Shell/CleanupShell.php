@@ -4,7 +4,6 @@ namespace LoginAttempts\Shell;
 
 use Cake\Console\ConsoleOptionParser;
 use Cake\Console\Shell;
-use Cake\ORM\TableRegistry;
 
 /**
  * Cleaning up attempts table shell command.
@@ -20,7 +19,7 @@ class CleanupShell extends Shell
     {
         $parser = parent::getOptionParser();
 
-        $parser->getDescription('Cleaning up attempts table, delete expired record.');
+        $parser->setDescription('Cleaning up attempts table, delete expired record.');
 
         return $parser;
     }
@@ -32,7 +31,7 @@ class CleanupShell extends Shell
      */
     public function main()
     {
-        TableRegistry::get('LoginAttempts.Attempts')->cleanup();
+        $this->loadModel('LoginAttempts.Attempts')->cleanup();
         $this->out('Cleaning up attempts table.');
     }
 }
