@@ -19,7 +19,7 @@
 
 ## 必要要件
 
-- CakePHP 3.x
+- CakePHP >= 3.5
 
 ## インストール
 
@@ -33,9 +33,21 @@ composer require nojimage/cakephp-login-attempts
 
 アプリケーションの `config/bootstrap.php` ファイルへ、次の行を追加します:
 
+### プラグインのロード
+
+(CakePHP 3.6.0 以降) アプリケーションの `src/Application.php` に、次の行を追加してプラグインをロードします:
+
+```
+$this->addPlugin('LoginAttempts');
+```
+
+(CakePHP 3.5.x 以前) アプリケーションの `config/bootstrap.php` に、次の行を追加してプラグインをロードします:
+
 ```
 Plugin::load('LoginAttempts');
 ```
+
+### テーブルの作成
 
 マイグレーションを実行し、データベースへ必要なテーブルを作成します:
 

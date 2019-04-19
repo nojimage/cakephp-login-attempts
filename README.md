@@ -17,7 +17,7 @@
 
 ## Requirements
 
-- CakePHP 3.x
+- CakePHP >= 3.5
 
 ## Installation
 
@@ -29,13 +29,23 @@ The recommended way to install composer packages is:
 composer require nojimage/cakephp-login-attempts
 ```
 
-in `config/bootstrap.php`
+### Load plugin
+
+(CakePHP >= 3.6.0) Load the plugin by adding the following statement in your project's `src/Application.php`:
+
+```
+$this->addPlugin('LoginAttempts');
+```
+
+(CakePHP <= 3.5.x) Load the plugin by adding the following statement in your project's `config/bootstrap.php` file:
 
 ```
 Plugin::load('LoginAttempts');
 ```
 
-And apply migration file.
+### Create table
+
+run migration command:
 
 ```
 bin/cake migrations migrate -p LoginAttempts
@@ -43,7 +53,7 @@ bin/cake migrations migrate -p LoginAttempts
 
 ### Usage
 
-Load `LoginAttempts.Form` authenticate instead `Form`.
+Use `LoginAttempts.Form` authenticate instead of `Form`.
 
 ```
         $this->loadComponent('Auth', [
@@ -56,3 +66,26 @@ Load `LoginAttempts.Form` authenticate instead `Form`.
             ],
         ]);
 ```
+
+### LoginAttempts.Form Options
+
+#### `attemptLimit`
+
+If the num of login failures of the user exceeds `attemptLimit` during `attemptDuration`,
+the user's login is not permitted.
+
+default: `5`
+
+#### `attemptDuration`
+
+If the num of login failures of the user exceeds `attemptLimit` during `attemptDuration`,
+the user's login is not permitted.
+
+default: `'+5 minutes'`
+
+#### `attemptAction`
+
+The number of attempts is stored separately for this key.
+Use when there are multiple login forms and you want to set restrictions separately.
+
+default: `'login'`
