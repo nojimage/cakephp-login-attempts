@@ -6,6 +6,7 @@ use Cake\Auth\FormAuthenticate as BaseFormAuthenticate;
 use Cake\Controller\ComponentRegistry;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
+use Cake\ORM\TableRegistry;
 use LoginAttempts\Model\Table\AttemptsTable;
 
 /**
@@ -51,7 +52,7 @@ class FormAuthenticate extends BaseFormAuthenticate
     {
         $ip = $request->clientIp();
         $action = $this->_getAction();
-        $attempts = $this->getTableLocator()->get('LoginAttempts.Attempts');
+        $attempts = TableRegistry::getTableLocator()->get('LoginAttempts.Attempts');
         /* @var $attempts AttemptsTable */
 
         // check attempts
