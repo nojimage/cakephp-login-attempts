@@ -90,3 +90,9 @@ default: `'+5 minutes'`
 試行回数はこのキー別に保存されます。ログインフォームが複数あり、それぞれ別個に制限を設けたい場合に使用します。
 
 default: `'login'`
+
+#### `attemptsStorageModel`
+
+ログインの失敗回数を記録およびチェックするためのモデルを指定します。
+
+default: `'LoginAttempts.Attempts'`

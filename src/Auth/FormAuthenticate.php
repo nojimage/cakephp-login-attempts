@@ -7,7 +7,7 @@ use Cake\Controller\ComponentRegistry;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\ORM\TableRegistry;
-use LoginAttempts\Model\Table\AttemptsTable;
+use LoginAttempts\Model\Table\AttemptsTableInterface;
 
 /**
  * LoginAttempts Form Authenticate class
@@ -27,6 +27,7 @@ class FormAuthenticate extends BaseFormAuthenticate
             'attemptLimit' => 5,
             'attemptDuration' => '+5 minutes',
             'attemptAction' => 'login',
+            'attemptsStorageModel' => 'LoginAttempts.Attempts',
         ];
         parent::__construct($registry, $config);
     }
@@ -52,8 +53,7 @@ class FormAuthenticate extends BaseFormAuthenticate
     {
         $ip = $request->clientIp();
         $action = $this->_getAction();
-        $attempts = TableRegistry::getTableLocator()->get('LoginAttempts.Attempts');
-        /* @var $attempts AttemptsTable */
+        $attempts = $this->getAttemptsTable();
 
         // check attempts
         if (!$attempts->check($ip, $action, $this->getConfig('attemptLimit'))) {
@@ -70,5 +70,13 @@ class FormAuthenticate extends BaseFormAuthenticate
         }
 
         return $user;
+    }
+
+    /**
+     * @return AttemptsTableInterface
+     */
+    protected function getAttemptsTable()
+    {
+        return TableRegistry::getTableLocator()->get($this->getConfig('attemptsStorageModel'));
     }
 }

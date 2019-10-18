@@ -89,3 +89,9 @@ The number of attempts is stored separately for this key.
 Use when there are multiple login forms and you want to set restrictions separately.
 
 default: `'login'`
+
+#### `attemptsStorageModel`
+
+A model used for logging a failure login and check count of failure login.
+
+default: `'LoginAttempts.Attempts'`

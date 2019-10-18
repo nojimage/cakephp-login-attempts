@@ -18,7 +18,7 @@ use LoginAttempts\Model\Entity\Attempt;
  * @method Attempt get($primaryKey, $options = [])
  * @method Attempt|bool save(EntityInterface $entity, $options = [])
  */
-class AttemptsTable extends Table
+class AttemptsTable extends Table implements AttemptsTableInterface
 {
 
     /**
