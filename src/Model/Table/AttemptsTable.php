@@ -36,7 +36,7 @@ class AttemptsTable extends Table implements AttemptsTableInterface
             'events' => [
                 'Model.beforeSave' => [
                     'created_at' => 'new',
-                ]
+                ],
             ],
         ]);
     }

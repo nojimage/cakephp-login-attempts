@@ -21,7 +21,7 @@ class CleanupShellTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.LoginAttempts.Shell\CleanupShell\Attempts'
+        'plugin.LoginAttempts.Shell\CleanupShell\Attempts',
     ];
 
     /**
