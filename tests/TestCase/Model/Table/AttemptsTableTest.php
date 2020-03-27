@@ -20,7 +20,7 @@ class AttemptsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.LoginAttempts.Attempts'
+        'plugin.LoginAttempts.Attempts',
     ];
 
     /**
