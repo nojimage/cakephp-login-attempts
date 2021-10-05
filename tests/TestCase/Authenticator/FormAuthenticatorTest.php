@@ -2,6 +2,7 @@
 
 namespace LoginAttempts\Test\TestCase\Authenticator;
 
+use Authentication\Authenticator\ResultInterface;
 use Authentication\Identifier\IdentifierInterface;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
@@ -64,6 +65,7 @@ class FormAuthenticatorTest extends TestCase
             ->method('getErrors')
             ->willReturn([]);
         $this->auth = new FormAuthenticator($this->identifier, [
+            'loginUrl' => '/login',
             'userModel' => 'AuthUsers',
         ]);
 
@@ -90,11 +92,62 @@ class FormAuthenticatorTest extends TestCase
     /**
      * test Authenticate
      */
+    public function testAuthenticateNotLoginUrl()
+    {
+        $now = Time::parse('2017-01-02 12:23:36');
+        Time::setTestNow($now);
+
+        $recordsBefore = $this->Attempts->find()->where(['ip' => '192.168.1.11', 'expires >=' => $now])->all();
+        $this->assertLessThan(5, $recordsBefore->count());
+
+        $request = (new ServerRequest([
+            'url' => 'not-login',
+            'post' => [
+                'username' => 'foo',
+                'password' => 'invalid',
+            ],
+        ]))->withEnv('REMOTE_ADDR', '192.168.1.11');
+
+        $result = $this->auth->authenticate($request, $this->response);
+        $this->assertSame(ResultInterface::FAILURE_OTHER, $result->getStatus());
+
+        // not created attempt record on non-login request
+        $recordsAfter = $this->Attempts->find()->where(['ip' => '192.168.1.11', 'expires >=' => $now])->all();
+        $this->assertSameSize($recordsBefore, $recordsAfter, 'not created attempt record on non-login request');
+    }
+
+    /**
+     * test Authenticate
+     */
+    public function testAuthenticateCredentialsMissing()
+    {
+        $now = Time::parse('2017-01-02 12:23:36');
+        Time::setTestNow($now);
+
+        $recordsBefore = $this->Attempts->find()->where(['ip' => '192.168.1.11', 'expires >=' => $now])->all();
+        $this->assertLessThan(5, $recordsBefore->count());
+
+        $request = (new ServerRequest([
+            'url' => 'login',
+        ]))->withEnv('REMOTE_ADDR', '192.168.1.11');
+
+        $result = $this->auth->authenticate($request, $this->response);
+        $this->assertSame(ResultInterface::FAILURE_CREDENTIALS_MISSING, $result->getStatus());
+
+        // not created attempt record on non-post request
+        $recordsAfter = $this->Attempts->find()->where(['ip' => '192.168.1.11', 'expires >=' => $now])->all();
+        $this->assertSameSize($recordsBefore, $recordsAfter, 'not created attempt record on non-post request');
+    }
+
+    /**
+     * test Authenticate
+     */
     public function testAuthenticateFailure()
     {
         Time::setTestNow(Time::parse('2017-01-01 12:23:34'));
 
         $request = (new ServerRequest([
+            'url' => 'login',
             'post' => [
                 'username' => 'foo',
                 'password' => 'invalid',
@@ -122,6 +175,7 @@ class FormAuthenticatorTest extends TestCase
         Time::setTestNow(Time::parse('2017-01-01 12:23:34'));
 
         $request = (new ServerRequest([
+            'url' => 'login',
             'post' => [
                 'username' => 'foo',
                 'password' => 'password',
@@ -134,6 +188,7 @@ class FormAuthenticatorTest extends TestCase
         // expired
         Time::setTestNow(Time::parse('2017-01-02 12:23:35'));
         $request = (new ServerRequest([
+            'url' => 'login',
             'post' => [
                 'username' => 'foo',
                 'password' => 'password',
@@ -159,6 +214,7 @@ class FormAuthenticatorTest extends TestCase
         $this->assertNotNull($result);
         $this->assertCount(1, $result);
         $request = new ServerRequest([
+            'url' => 'login',
             'post' => [
                 'username' => 'foo',
                 'password' => 'password',

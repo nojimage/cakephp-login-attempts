@@ -4,6 +4,7 @@ namespace LoginAttempts\Authenticator;
 
 use Authentication\Authenticator\FormAuthenticator as BaseFormAuthenticator;
 use Authentication\Authenticator\Result;
+use Authentication\Authenticator\ResultInterface;
 use Authentication\Identifier\IdentifierInterface;
 use Cake\Http\ServerRequest;
 use Cake\ORM\TableRegistry;
@@ -60,14 +61,14 @@ class FormAuthenticator extends BaseFormAuthenticator
 
         // check attempts
         if (!$attempts->check($ip, $action, $this->getConfig('attemptLimit'))) {
-            return new Result(null, Result::FAILURE_OTHER);
+            return new Result(null, ResultInterface::FAILURE_OTHER);
         }
 
         $result = parent::authenticate($request, $response);
         if ($result->isValid()) {
             // on success clear attempts
             $attempts->reset($ip, $action);
-        } else {
+        } elseif ($result->getStatus() === ResultInterface::FAILURE_IDENTITY_NOT_FOUND) {
             // on failure record attempts
             $attempts->fail($ip, $action, $this->getConfig('attemptDuration'));
         }
