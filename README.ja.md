@@ -20,6 +20,7 @@
 ## 必要要件
 
 - CakePHP >= 3.5
+- CakePHP Authentication plugin 1.x
 
 ## インストール
 
@@ -57,17 +58,13 @@ bin/cake migrations migrate -p LoginAttempts
 
 ### 使用方法
 
-`Form` 認証ハンドラーの代わりに `LoginAttempts.Form` を使用してください。
+`Form` 認証機能の代わりに `LoginAttempts.Form` を使用してください。
 
 ```
-        $this->loadComponent('Auth', [
-            'authenticate' => [
-                'LoginAttempts.Form' => [
-                    'fields' => ['username' => 'email'],
-                    'attemptLimit' => 5,
-                    'attemptDuration' => '+5 minutes',
-                ],
-            ],
+        $service->loadAuthenticator('Authentication.Form', [
+            'fields' => ['username' => 'email'],
+            'attemptLimit' => 5,
+            'attemptDuration' => '+5 minutes',
         ]);
 ```
 
