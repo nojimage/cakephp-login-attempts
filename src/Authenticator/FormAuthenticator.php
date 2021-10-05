@@ -24,6 +24,7 @@ class FormAuthenticator extends BaseFormAuthenticate
     public function __construct(ComponentRegistry $registry, array $config = [])
     {
         $this->_defaultConfig += [
+            'userModel' => 'Users',
             'attemptLimit' => 5,
             'attemptDuration' => '+5 minutes',
             'attemptAction' => 'login',
