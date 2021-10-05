@@ -2,7 +2,7 @@
 
 namespace LoginAttempts\Test\TestCase\Authenticator;
 
-use Cake\Controller\ComponentRegistry;
+use Authentication\Identifier\IdentifierInterface;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\I18n\Time;
@@ -30,9 +30,9 @@ class FormAuthenticatorTest extends TestCase
     ];
 
     /**
-     * @var ComponentRegistry
+     * @var IdentifierInterface
      */
-    private $Collection;
+    private $identifier;
 
     /**
      * @var FormAuthenticator
@@ -67,8 +67,11 @@ class FormAuthenticatorTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->Collection = $this->getMockBuilder(ComponentRegistry::class)->getMock();
-        $this->auth = new FormAuthenticator($this->Collection, [
+        $this->identifier = $this->getMockBuilder(IdentifierInterface::class)->getMock();
+        $this->identifier
+            ->method('getErrors')
+            ->willReturn([]);
+        $this->auth = new FormAuthenticator($this->identifier, [
             'userModel' => 'AuthUsers',
         ]);
 
@@ -108,7 +111,7 @@ class FormAuthenticatorTest extends TestCase
         ]))->withEnv('REMOTE_ADDR', '192.168.1.12');
 
         $result = $this->auth->authenticate($request, $this->response);
-        $this->assertFalse($result);
+        $this->assertFalse($result->isValid());
 
         // created attempt record on auth failure
         $record = $this->Attempts->find()->where(['ip' => '192.168.1.12'])->first();
@@ -135,7 +138,7 @@ class FormAuthenticatorTest extends TestCase
         ]))->withEnv('REMOTE_ADDR', '192.168.1.11');
 
         $result = $this->auth->authenticate($request, $this->response);
-        $this->assertFalse($result);
+        $this->assertFalse($result->isValid());
 
         // expired
         Time::setTestNow(Time::parse('2017-01-02 12:23:35'));
@@ -146,8 +149,12 @@ class FormAuthenticatorTest extends TestCase
             ],
         ]))->withEnv('REMOTE_ADDR', '192.168.1.11');
 
+        $user = ['id' => 1, 'username' => 'foo'];
+        $this->identifier->expects($this->once())
+            ->method('identify')
+            ->willReturn($user);
         $result = $this->auth->authenticate($request, $this->response);
-        $this->assertSame(['id' => 1, 'username' => 'foo'], $result);
+        $this->assertSame($user, $result->getData());
     }
 
     /**
@@ -168,8 +175,12 @@ class FormAuthenticatorTest extends TestCase
         ]);
         $request = $request->withEnv('REMOTE_ADDR', '192.168.1.22');
 
+        $user = ['id' => 1, 'username' => 'foo'];
+        $this->identifier->expects($this->once())
+            ->method('identify')
+            ->willReturn($user);
         $result = $this->auth->authenticate($request, $this->response);
-        $this->assertNotEmpty($result);
+        $this->assertTrue($result->isValid());
 
         // created attempt record on auth failure
         $record = $this->Attempts->find()->where(['ip' => '192.168.1.2'])->all();

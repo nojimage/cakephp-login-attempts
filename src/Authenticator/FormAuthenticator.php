@@ -2,26 +2,28 @@
 
 namespace LoginAttempts\Authenticator;
 
-use Cake\Auth\FormAuthenticate as BaseFormAuthenticate;
-use Cake\Controller\ComponentRegistry;
-use Cake\Http\Response;
+use Authentication\Authenticator\FormAuthenticator as BaseFormAuthenticator;
+use Authentication\Authenticator\Result;
+use Authentication\Identifier\IdentifierInterface;
 use Cake\Http\ServerRequest;
 use Cake\ORM\TableRegistry;
 use LoginAttempts\Model\Table\AttemptsTableInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * LoginAttempts Form Authenticator class
  */
-class FormAuthenticator extends BaseFormAuthenticate
+class FormAuthenticator extends BaseFormAuthenticator
 {
 
     /**
      * construct
      *
-     * @param ComponentRegistry $registry The Component registry used on this request.
+     * @param IdentifierInterface $identifier Identifier or identifiers collection.
      * @param array $config Array of config to use.
      */
-    public function __construct(ComponentRegistry $registry, array $config = [])
+    public function __construct(IdentifierInterface $identifier, array $config = [])
     {
         $this->_defaultConfig += [
             'userModel' => 'Users',
@@ -30,7 +32,7 @@ class FormAuthenticator extends BaseFormAuthenticate
             'attemptAction' => 'login',
             'attemptsStorageModel' => 'LoginAttempts.Attempts',
         ];
-        parent::__construct($registry, $config);
+        parent::__construct($identifier, $config);
     }
 
     /**
@@ -47,10 +49,10 @@ class FormAuthenticator extends BaseFormAuthenticate
      * authenticate & check attempt counts
      *
      * @param ServerRequest $request The request that contains login information.
-     * @param Response $response Unused response object.
-     * @return mixed False on login failure. An array of User data on success.
+     * @param ResponseInterface $response Unused response object.
+     * @return \Authentication\Authenticator\ResultInterface
      */
-    public function authenticate(ServerRequest $request, Response $response)
+    public function authenticate(ServerRequestInterface $request, ResponseInterface $response)
     {
         $ip = $request->clientIp();
         $action = $this->_getAction();
@@ -58,11 +60,11 @@ class FormAuthenticator extends BaseFormAuthenticate
 
         // check attempts
         if (!$attempts->check($ip, $action, $this->getConfig('attemptLimit'))) {
-            return false;
+            return new Result(null, Result::FAILURE_OTHER);
         }
 
-        $user = parent::authenticate($request, $response);
-        if ($user) {
+        $result = parent::authenticate($request, $response);
+        if ($result->isValid()) {
             // on success clear attempts
             $attempts->reset($ip, $action);
         } else {
@@ -70,7 +72,7 @@ class FormAuthenticator extends BaseFormAuthenticate
             $attempts->fail($ip, $action, $this->getConfig('attemptDuration'));
         }
 
-        return $user;
+        return $result;
     }
 
     /**
