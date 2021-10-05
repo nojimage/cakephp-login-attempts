@@ -6,7 +6,6 @@ use Authentication\Identifier\IdentifierInterface;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\I18n\Time;
-use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Security;
@@ -25,7 +24,6 @@ class FormAuthenticatorTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.LoginAttempts.AuthUsers',
         'plugin.LoginAttempts.Auth\FormAuthenticate\Attempts',
     ];
 
@@ -56,12 +54,6 @@ class FormAuthenticatorTest extends TestCase
     private $Attempts;
 
     /**
-     *
-     * @var Table
-     */
-    private $Users;
-
-    /**
      * Sets up
      */
     public function setUp()
@@ -76,7 +68,6 @@ class FormAuthenticatorTest extends TestCase
         ]);
 
         // set password
-        $this->Users = TableRegistry::get('AuthUsers');
         $this->Attempts = TableRegistry::get('LoginAttempts.Attempts');
 
         $this->response = $this->getMockBuilder(Response::class)->getMock();
