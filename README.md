@@ -18,7 +18,7 @@
 ## Requirements
 
 - CakePHP >= 3.5
-- CakePHP Authentication plugin 1.x
+- (Optional) CakePHP Authentication plugin 1.x
 
 ## Installation
 
@@ -57,7 +57,21 @@ bin/cake migrations migrate -p LoginAttempts
 Use `LoginAttempts.Form` authenticator instead of `Form`.
 
 ```
-        $service->loadAuthenticator('Authentication.Form', [
+        $this->loadComponent('Auth', [
+            'authenticate' => [
+                'LoginAttempts.Form' => [
+                    'fields' => ['username' => 'email'],
+                    'attemptLimit' => 5,
+                    'attemptDuration' => '+5 minutes',
+                ],
+            ],
+        ]);
+```
+
+If use are using Authentication plugin:
+
+```
+        $service->loadAuthenticator('LoginAttempts.Form', [
             'fields' => ['username' => 'email'],
             'attemptLimit' => 5,
             'attemptDuration' => '+5 minutes',
