@@ -90,6 +90,27 @@ class FormAuthenticatorTest extends TestCase
     }
 
     /**
+     * @param string $url the request url
+     * @param array|null $post post data
+     * @param string $remoteAddr REMOTE_ADDR env
+     * @return ServerRequest
+     */
+    private function getRequest($url, $post, $remoteAddr = '192.168.1.11')
+    {
+        if (class_exists('\Laminas\Diactoros\Uri')) {
+            return (new ServerRequest([
+                'uri' => new \Laminas\Diactoros\Uri($url),
+                'post' => $post,
+            ]))->withEnv('REMOTE_ADDR', $remoteAddr);
+        }
+
+        return (new ServerRequest([
+            'url' => $url,
+            'post' => $post,
+        ]))->withEnv('REMOTE_ADDR', $remoteAddr);
+    }
+
+    /**
      * test Authenticate
      */
     public function testAuthenticateNotLoginUrl()
@@ -100,13 +121,10 @@ class FormAuthenticatorTest extends TestCase
         $recordsBefore = $this->Attempts->find()->where(['ip' => '192.168.1.11', 'expires >=' => $now])->all();
         $this->assertLessThan(5, $recordsBefore->count());
 
-        $request = (new ServerRequest([
-            'url' => 'not-login',
-            'post' => [
-                'username' => 'foo',
-                'password' => 'invalid',
-            ],
-        ]))->withEnv('REMOTE_ADDR', '192.168.1.11');
+        $request = $this->getRequest('/not-login', [
+            'username' => 'foo',
+            'password' => 'invalid',
+        ]);
 
         $result = $this->auth->authenticate($request, $this->response);
         $this->assertSame(ResultInterface::FAILURE_OTHER, $result->getStatus());
@@ -127,9 +145,7 @@ class FormAuthenticatorTest extends TestCase
         $recordsBefore = $this->Attempts->find()->where(['ip' => '192.168.1.11', 'expires >=' => $now])->all();
         $this->assertLessThan(5, $recordsBefore->count());
 
-        $request = (new ServerRequest([
-            'url' => 'login',
-        ]))->withEnv('REMOTE_ADDR', '192.168.1.11');
+        $request = $this->getRequest('/login', null);
 
         $result = $this->auth->authenticate($request, $this->response);
         $this->assertSame(ResultInterface::FAILURE_CREDENTIALS_MISSING, $result->getStatus());
@@ -146,13 +162,10 @@ class FormAuthenticatorTest extends TestCase
     {
         Time::setTestNow(Time::parse('2017-01-01 12:23:34'));
 
-        $request = (new ServerRequest([
-            'url' => 'login',
-            'post' => [
-                'username' => 'foo',
-                'password' => 'invalid',
-            ],
-        ]))->withEnv('REMOTE_ADDR', '192.168.1.12');
+        $request = $this->getRequest('/login', [
+            'username' => 'foo',
+            'password' => 'invalid',
+        ], '192.168.1.12');
 
         $result = $this->auth->authenticate($request, $this->response);
         $this->assertFalse($result->isValid());
@@ -174,26 +187,21 @@ class FormAuthenticatorTest extends TestCase
     {
         Time::setTestNow(Time::parse('2017-01-01 12:23:34'));
 
-        $request = (new ServerRequest([
-            'url' => 'login',
-            'post' => [
-                'username' => 'foo',
-                'password' => 'password',
-            ],
-        ]))->withEnv('REMOTE_ADDR', '192.168.1.11');
+        $request = $this->getRequest('/login', [
+            'username' => 'foo',
+            'password' => 'password',
+        ]);
 
         $result = $this->auth->authenticate($request, $this->response);
         $this->assertFalse($result->isValid());
 
         // expired
         Time::setTestNow(Time::parse('2017-01-02 12:23:35'));
-        $request = (new ServerRequest([
-            'url' => 'login',
-            'post' => [
-                'username' => 'foo',
-                'password' => 'password',
-            ],
-        ]))->withEnv('REMOTE_ADDR', '192.168.1.11');
+
+        $request = $this->getRequest('/login', [
+            'username' => 'foo',
+            'password' => 'password',
+        ]);
 
         $user = ['id' => 1, 'username' => 'foo'];
         $this->identifier->expects($this->once())
@@ -213,14 +221,11 @@ class FormAuthenticatorTest extends TestCase
         $result = $this->Attempts->find()->where(['ip' => '192.168.1.22'])->all();
         $this->assertNotNull($result);
         $this->assertCount(1, $result);
-        $request = new ServerRequest([
-            'url' => 'login',
-            'post' => [
-                'username' => 'foo',
-                'password' => 'password',
-            ],
-        ]);
-        $request = $request->withEnv('REMOTE_ADDR', '192.168.1.22');
+
+        $request = $this->getRequest('/login', [
+            'username' => 'foo',
+            'password' => 'password',
+        ], '192.168.1.22');
 
         $user = ['id' => 1, 'username' => 'foo'];
         $this->identifier->expects($this->once())
