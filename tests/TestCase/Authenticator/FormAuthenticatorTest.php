@@ -103,6 +103,12 @@ class FormAuthenticatorTest extends TestCase
                 'post' => $post,
             ]))->withEnv('REMOTE_ADDR', $remoteAddr);
         }
+        if (class_exists('\Zend\Diactoros\Uri')) {
+            return (new ServerRequest([
+                'uri' => new \Zend\Diactoros\Uri($url),
+                'post' => $post,
+            ]))->withEnv('REMOTE_ADDR', $remoteAddr);
+        }
 
         return (new ServerRequest([
             'url' => $url,
