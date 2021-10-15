@@ -1,7 +1,5 @@
 <?php
 
-use Cake\Core\Plugin;
-
 /**
  * Test suite bootstrap for LoginAttempts.
  *
@@ -27,5 +25,3 @@ $here = __DIR__;
 
 chdir($root);
 require $root . '/vendor/cakephp/cakephp/tests/bootstrap.php';
-
-Plugin::load('LoginAttempts', ['path' => dirname(__DIR__) . DS]);
