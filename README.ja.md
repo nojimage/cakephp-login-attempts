@@ -19,8 +19,8 @@
 
 ## 必要要件
 
-- CakePHP >= 3.5
-- (任意) CakePHP Authentication plugin 1.x
+- CakePHP >= 4.0
+- (任意) CakePHP Authentication plugin 2.x
 
 ## インストール
 
@@ -32,20 +32,12 @@
 composer require nojimage/cakephp-login-attempts
 ```
 
-アプリケーションの `config/bootstrap.php` ファイルへ、次の行を追加します:
-
 ### プラグインのロード
 
-(CakePHP 3.6.0 以降) アプリケーションの `src/Application.php` に、次の行を追加してプラグインをロードします:
+アプリケーションの `src/Application.php` に、次の行を追加してプラグインをロードします:
 
 ```
 $this->addPlugin('LoginAttempts');
-```
-
-(CakePHP 3.5.x 以前) アプリケーションの `config/bootstrap.php` に、次の行を追加してプラグインをロードします:
-
-```
-Plugin::load('LoginAttempts');
 ```
 
 ### テーブルの作成
@@ -59,6 +51,8 @@ bin/cake migrations migrate -p LoginAttempts
 ### 使用方法
 
 `Form` 認証機能の代わりに `LoginAttempts.Form` を使用してください。
+
+非推奨となった `AuthComponent` を使う場合:
 
 ```
         $this->loadComponent('Auth', [
