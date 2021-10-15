@@ -1,6 +1,5 @@
 <?php
 
-use Cake\Core\Configure;
 use Cake\Core\Plugin;
 
 /**
@@ -29,9 +28,4 @@ $here = __DIR__;
 chdir($root);
 require $root . '/vendor/cakephp/cakephp/tests/bootstrap.php';
 
-// Disable deprecations for now when using 3.6
-if (version_compare(Configure::version(), '3.6.0', '>=')) {
-    error_reporting(E_ALL ^ E_USER_DEPRECATED);
-}
 Plugin::load('LoginAttempts', ['path' => dirname(__DIR__) . DS]);
-error_reporting(E_ALL);
