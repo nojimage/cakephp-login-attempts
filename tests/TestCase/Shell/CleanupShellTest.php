@@ -39,7 +39,7 @@ class CleanupShellTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->io = $this->getMockBuilder(ConsoleIo::class)->getMock();
@@ -52,7 +52,7 @@ class CleanupShellTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->Cleanup);
         unset($this->Attempts);

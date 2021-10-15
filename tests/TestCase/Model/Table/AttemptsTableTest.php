@@ -33,7 +33,7 @@ class AttemptsTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->Attempts = TableRegistry::get('Attempts', ['className' => AttemptsTable::class]);
@@ -44,7 +44,7 @@ class AttemptsTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->Attempts);
         Time::setTestNow();

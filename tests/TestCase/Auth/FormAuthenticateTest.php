@@ -64,7 +64,7 @@ class FormAuthenticateTest extends TestCase
     /**
      * Sets up
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->Collection = $this->getMockBuilder(ComponentRegistry::class)->getMock();
@@ -85,7 +85,7 @@ class FormAuthenticateTest extends TestCase
     /**
      * Tears down
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->auth, $this->Users, $this->Attempts);
         Security::setSalt($this->salt);

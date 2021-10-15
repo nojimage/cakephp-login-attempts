@@ -27,7 +27,7 @@ class AttemptsTable extends Table implements AttemptsTableInterface
      * @param array $config The configuration for the Table.
      * @return void
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         $this->setTable('attempts');
         $this->setDisplayField('ip');
@@ -47,7 +47,7 @@ class AttemptsTable extends Table implements AttemptsTableInterface
      * @param Validator $validator Validator instance.
      * @return Validator
      */
-    public function validationDefault(Validator $validator)
+    public function validationDefault(Validator $validator): \Cake\Validation\Validator
     {
         $validator
             ->add('id', 'valid', ['rule' => 'numeric'])

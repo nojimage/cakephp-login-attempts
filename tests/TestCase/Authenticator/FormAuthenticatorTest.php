@@ -57,7 +57,7 @@ class FormAuthenticatorTest extends TestCase
     /**
      * Sets up
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->identifier = $this->getMockBuilder(IdentifierInterface::class)->getMock();
@@ -81,7 +81,7 @@ class FormAuthenticatorTest extends TestCase
     /**
      * Tears down
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->auth, $this->Users, $this->Attempts);
         Security::setSalt($this->salt);
