@@ -28,7 +28,7 @@ class AuthUsersFixture extends TestFixture
     ];
     // @codingStandardsIgnoreEnd
 
-    public function init()
+    public function init(): void
     {
         parent::init();
         $this->records = [];
