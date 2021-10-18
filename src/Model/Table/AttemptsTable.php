@@ -15,7 +15,7 @@ use Cake\Validation\Validator;
  * @method \LoginAttempts\Model\Entity\Attempt patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \LoginAttempts\Model\Entity\Attempt[] patchEntities($entities, array $data, array $options = [])
  * @method \LoginAttempts\Model\Entity\Attempt get($primaryKey, $options = [])
- * @method \LoginAttempts\Model\Entity\Attempt|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \LoginAttempts\Model\Entity\Attempt|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  */
 class AttemptsTable extends Table implements AttemptsTableInterface
 {
@@ -80,7 +80,7 @@ class AttemptsTable extends Table implements AttemptsTableInterface
      * @param string $ip A request client ip.
      * @param string $action A request target action.
      * @param string $duration Duration to disable login.
-     * @return bool
+     * @return \LoginAttempts\Model\Entity\Attempt|false
      */
     public function fail($ip, $action, $duration)
     {
@@ -118,7 +118,7 @@ class AttemptsTable extends Table implements AttemptsTableInterface
      *
      * @param string $ip A request client ip.
      * @param string $action A request target action.
-     * @return bool
+     * @return int
      */
     public function reset($ip, $action)
     {
@@ -131,7 +131,7 @@ class AttemptsTable extends Table implements AttemptsTableInterface
     /**
      * cleanup expired data
      *
-     * @return bool
+     * @return int
      */
     public function cleanup()
     {
