@@ -1,26 +1,24 @@
 <?php
+declare(strict_types=1);
 
 namespace LoginAttempts\Model\Table;
 
-use Cake\Datasource\EntityInterface;
 use Cake\I18n\Time;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
-use LoginAttempts\Model\Entity\Attempt;
 
 /**
  * Attempts Model
  *
- * @method Attempt newEntity($data = null, array $options = [])
- * @method Attempt[] newEntities(array $data, array $options = [])
- * @method Attempt patchEntity(EntityInterface $entity, array $data, array $options = [])
- * @method Attempt[] patchEntities($entities, array $data, array $options = [])
- * @method Attempt get($primaryKey, $options = [])
- * @method Attempt|bool save(EntityInterface $entity, $options = [])
+ * @method \LoginAttempts\Model\Entity\Attempt newEntity($data = null, array $options = [])
+ * @method \LoginAttempts\Model\Entity\Attempt[] newEntities(array $data, array $options = [])
+ * @method \LoginAttempts\Model\Entity\Attempt patchEntity(\LoginAttempts\Model\Table\EntityInterface $entity, array $data, array $options = [])
+ * @method \LoginAttempts\Model\Entity\Attempt[] patchEntities($entities, array $data, array $options = [])
+ * @method \LoginAttempts\Model\Entity\Attempt get($primaryKey, $options = [])
+ * @method \LoginAttempts\Model\Entity\Attempt|bool save(\LoginAttempts\Model\Table\EntityInterface $entity, $options = [])
  */
 class AttemptsTable extends Table implements AttemptsTableInterface
 {
-
     /**
      * Initialize method
      *
@@ -44,8 +42,8 @@ class AttemptsTable extends Table implements AttemptsTableInterface
     /**
      * Default validation rules.
      *
-     * @param Validator $validator Validator instance.
-     * @return Validator
+     * @param \Cake\Validation\Validator $validator Validator instance.
+     * @return \Cake\Validation\Validator
      */
     public function validationDefault(Validator $validator): \Cake\Validation\Validator
     {

@@ -6,11 +6,9 @@ use LoginAttempts\Test\Fixture\AttemptsFixture as BaseFixture;
 
 /**
  * AttemptsFixture
- *
  */
 class AttemptsFixture extends BaseFixture
 {
-
     /**
      * Records
      *

@@ -6,11 +6,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * AttemptsFixture
- *
  */
 class AttemptsFixture extends TestFixture
 {
-
     /**
      * Fields
      *

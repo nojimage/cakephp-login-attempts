@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace LoginAttempts\Test\TestCase\Authenticator;
 
@@ -10,8 +11,6 @@ use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Security;
 use LoginAttempts\Authenticator\FormAuthenticator;
-use LoginAttempts\Model\Entity\Attempt;
-use LoginAttempts\Model\Table\AttemptsTable;
 
 /**
  * test for FormAuthenticator
@@ -43,7 +42,6 @@ class FormAuthenticatorTest extends TestCase
     private $salt;
 
     /**
-     *
      * @var AttemptsTable
      */
     private $Attempts;
@@ -170,7 +168,7 @@ class FormAuthenticatorTest extends TestCase
 
         // created attempt record on auth failure
         $record = $this->Attempts->find()->where(['ip' => '192.168.1.12'])->first();
-        /* @var $record Attempt */
+        /** @var Attempt $record */
         $this->assertNotEmpty($record, 'created attempt record on auth failure');
 
         $this->assertSame('192.168.1.12', $record->ip);

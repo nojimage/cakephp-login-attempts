@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace LoginAttempts\Test\TestCase\Shell;
 
@@ -14,7 +15,6 @@ use LoginAttempts\Shell\CleanupShell;
  */
 class CleanupShellTest extends TestCase
 {
-
     /**
      * Fixtures
      *

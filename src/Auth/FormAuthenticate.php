@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace LoginAttempts\Auth;
 
@@ -7,18 +8,16 @@ use Cake\Controller\ComponentRegistry;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\ORM\TableRegistry;
-use LoginAttempts\Model\Table\AttemptsTableInterface;
 
 /**
  * LoginAttempts Form Authenticate class
  */
 class FormAuthenticate extends BaseFormAuthenticate
 {
-
     /**
      * construct
      *
-     * @param ComponentRegistry $registry The Component registry used on this request.
+     * @param \Cake\Controller\ComponentRegistry $registry The Component registry used on this request.
      * @param array $config Array of config to use.
      */
     public function __construct(ComponentRegistry $registry, array $config = [])
@@ -45,8 +44,8 @@ class FormAuthenticate extends BaseFormAuthenticate
     /**
      * authenticate & check attempt counts
      *
-     * @param ServerRequest $request The request that contains login information.
-     * @param Response $response Unused response object.
+     * @param \Cake\Http\ServerRequest $request The request that contains login information.
+     * @param \Cake\Http\Response $response Unused response object.
      * @return mixed False on login failure. An array of User data on success.
      */
     public function authenticate(ServerRequest $request, Response $response)
@@ -73,7 +72,7 @@ class FormAuthenticate extends BaseFormAuthenticate
     }
 
     /**
-     * @return AttemptsTableInterface
+     * @return \LoginAttempts\Model\Table\AttemptsTableInterface
      */
     protected function getAttemptsTable()
     {
