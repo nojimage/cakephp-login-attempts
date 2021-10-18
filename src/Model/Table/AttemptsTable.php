@@ -56,7 +56,7 @@ class AttemptsTable extends Table implements AttemptsTableInterface
             ->notEmptyString('ip')
             ->add('ip', 'ip', [
                 'rule' => 'ip',
-                'message' => __d('login_attemts', 'invalid IP address'),
+                'message' => __d('login_attempts', 'invalid IP address'),
             ]);
 
         $validator
