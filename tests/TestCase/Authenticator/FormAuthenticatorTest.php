@@ -42,7 +42,7 @@ class FormAuthenticatorTest extends TestCase
     private $salt;
 
     /**
-     * @var AttemptsTable
+     * @var \LoginAttempts\Model\Table\AttemptsTable
      */
     private $Attempts;
 
@@ -168,7 +168,7 @@ class FormAuthenticatorTest extends TestCase
 
         // created attempt record on auth failure
         $record = $this->Attempts->find()->where(['ip' => '192.168.1.12'])->first();
-        /** @var Attempt $record */
+        /** @var \LoginAttempts\Model\Entity\Attempt $record */
         $this->assertNotEmpty($record, 'created attempt record on auth failure');
 
         $this->assertSame('192.168.1.12', $record->ip);

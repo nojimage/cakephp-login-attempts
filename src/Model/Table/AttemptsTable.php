@@ -12,10 +12,10 @@ use Cake\Validation\Validator;
  *
  * @method \LoginAttempts\Model\Entity\Attempt newEntity($data = null, array $options = [])
  * @method \LoginAttempts\Model\Entity\Attempt[] newEntities(array $data, array $options = [])
- * @method \LoginAttempts\Model\Entity\Attempt patchEntity(\LoginAttempts\Model\Table\EntityInterface $entity, array $data, array $options = [])
+ * @method \LoginAttempts\Model\Entity\Attempt patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \LoginAttempts\Model\Entity\Attempt[] patchEntities($entities, array $data, array $options = [])
  * @method \LoginAttempts\Model\Entity\Attempt get($primaryKey, $options = [])
- * @method \LoginAttempts\Model\Entity\Attempt|bool save(\LoginAttempts\Model\Table\EntityInterface $entity, $options = [])
+ * @method \LoginAttempts\Model\Entity\Attempt|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
  */
 class AttemptsTable extends Table implements AttemptsTableInterface
 {
