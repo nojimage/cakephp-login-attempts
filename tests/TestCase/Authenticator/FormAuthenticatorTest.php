@@ -4,7 +4,6 @@ namespace LoginAttempts\Test\TestCase\Authenticator;
 
 use Authentication\Authenticator\ResultInterface;
 use Authentication\Identifier\IdentifierInterface;
-use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
@@ -39,11 +38,6 @@ class FormAuthenticatorTest extends TestCase
     private $auth;
 
     /**
-     * @var Response
-     */
-    private $response;
-
-    /**
      * @var string
      */
     private $salt;
@@ -71,8 +65,6 @@ class FormAuthenticatorTest extends TestCase
 
         // set password
         $this->Attempts = TableRegistry::get('LoginAttempts.Attempts');
-
-        $this->response = $this->getMockBuilder(Response::class)->getMock();
 
         $this->salt = Security::getSalt();
         Security::setSalt('DYhG93b0qyJfIxfs2guVoUubWwvniR2G0FgaC9mi');
@@ -132,7 +124,7 @@ class FormAuthenticatorTest extends TestCase
             'password' => 'invalid',
         ]);
 
-        $result = $this->auth->authenticate($request, $this->response);
+        $result = $this->auth->authenticate($request);
         $this->assertSame(ResultInterface::FAILURE_OTHER, $result->getStatus());
 
         // not created attempt record on non-login request
@@ -153,7 +145,7 @@ class FormAuthenticatorTest extends TestCase
 
         $request = $this->getRequest('/login', null);
 
-        $result = $this->auth->authenticate($request, $this->response);
+        $result = $this->auth->authenticate($request);
         $this->assertSame(ResultInterface::FAILURE_CREDENTIALS_MISSING, $result->getStatus());
 
         // not created attempt record on non-post request
@@ -173,7 +165,7 @@ class FormAuthenticatorTest extends TestCase
             'password' => 'invalid',
         ], '192.168.1.12');
 
-        $result = $this->auth->authenticate($request, $this->response);
+        $result = $this->auth->authenticate($request);
         $this->assertFalse($result->isValid());
 
         // created attempt record on auth failure
@@ -198,7 +190,7 @@ class FormAuthenticatorTest extends TestCase
             'password' => 'password',
         ]);
 
-        $result = $this->auth->authenticate($request, $this->response);
+        $result = $this->auth->authenticate($request);
         $this->assertFalse($result->isValid());
 
         // expired
@@ -213,7 +205,7 @@ class FormAuthenticatorTest extends TestCase
         $this->identifier->expects($this->once())
             ->method('identify')
             ->willReturn($user);
-        $result = $this->auth->authenticate($request, $this->response);
+        $result = $this->auth->authenticate($request);
         $this->assertSame($user, $result->getData());
     }
 
@@ -237,7 +229,7 @@ class FormAuthenticatorTest extends TestCase
         $this->identifier->expects($this->once())
             ->method('identify')
             ->willReturn($user);
-        $result = $this->auth->authenticate($request, $this->response);
+        $result = $this->auth->authenticate($request);
         $this->assertTrue($result->isValid());
 
         // created attempt record on auth failure

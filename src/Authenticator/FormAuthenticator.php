@@ -9,7 +9,6 @@ use Authentication\Identifier\IdentifierInterface;
 use Cake\Http\ServerRequest;
 use Cake\ORM\TableRegistry;
 use LoginAttempts\Model\Table\AttemptsTableInterface;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
@@ -50,10 +49,9 @@ class FormAuthenticator extends BaseFormAuthenticator
      * authenticate & check attempt counts
      *
      * @param ServerRequest $request The request that contains login information.
-     * @param ResponseInterface $response Unused response object.
      * @return \Authentication\Authenticator\ResultInterface
      */
-    public function authenticate(ServerRequestInterface $request, ResponseInterface $response)
+    public function authenticate(ServerRequestInterface $request): ResultInterface
     {
         $ip = $request->clientIp();
         $action = $this->_getAction();
@@ -64,7 +62,7 @@ class FormAuthenticator extends BaseFormAuthenticator
             return new Result(null, ResultInterface::FAILURE_OTHER);
         }
 
-        $result = parent::authenticate($request, $response);
+        $result = parent::authenticate($request);
         if ($result->isValid()) {
             // on success clear attempts
             $attempts->reset($ip, $action);
