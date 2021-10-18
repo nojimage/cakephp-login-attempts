@@ -51,11 +51,11 @@ class AttemptsTable extends Table implements AttemptsTableInterface
     {
         $validator
             ->add('id', 'valid', ['rule' => 'numeric'])
-            ->allowEmpty('id', 'create');
+            ->allowEmptyString('id', 'create');
 
         $validator
             ->requirePresence('ip', 'create')
-            ->notEmpty('ip')
+            ->notEmptyString('ip')
             ->add('ip', 'ip', [
                 'rule' => 'ip',
                 'message' => __d('login_attemts', 'invalid IP address'),
@@ -63,15 +63,15 @@ class AttemptsTable extends Table implements AttemptsTableInterface
 
         $validator
             ->requirePresence('action', 'create')
-            ->notEmpty('action');
+            ->notEmptyString('action');
 
         $validator
             ->requirePresence('expires', 'create')
-            ->notEmpty('expires');
+            ->notEmptyDateTime('expires');
 
         $validator
             ->requirePresence('created_at', 'create')
-            ->notEmpty('created_at');
+            ->notEmptyDateTime('created_at');
 
         return $validator;
     }
