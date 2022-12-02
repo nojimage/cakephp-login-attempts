@@ -7,7 +7,6 @@ use Cake\Controller\ComponentRegistry;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\I18n\FrozenTime;
-use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Security;
 use LoginAttempts\Auth\FormAuthenticate;
@@ -69,8 +68,8 @@ class FormAuthenticateTest extends TestCase
         ]);
 
         // set password
-        $this->Users = TableRegistry::get('AuthUsers');
-        $this->Attempts = TableRegistry::get('LoginAttempts.Attempts');
+        $this->Users = $this->getTableLocator()->get('AuthUsers');
+        $this->Attempts = $this->getTableLocator()->get('LoginAttempts.Attempts');
 
         $this->response = $this->getMockBuilder(Response::class)->getMock();
 

@@ -7,7 +7,8 @@ use Authentication\Authenticator\FormAuthenticator as BaseFormAuthenticator;
 use Authentication\Authenticator\Result;
 use Authentication\Authenticator\ResultInterface;
 use Authentication\Identifier\IdentifierInterface;
-use Cake\ORM\TableRegistry;
+use Cake\ORM\Locator\LocatorAwareTrait;
+use Cake\ORM\Table;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
@@ -15,6 +16,8 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class FormAuthenticator extends BaseFormAuthenticator
 {
+    use LocatorAwareTrait;
+
     /**
      * construct
      *
@@ -73,10 +76,10 @@ class FormAuthenticator extends BaseFormAuthenticator
     }
 
     /**
-     * @return \LoginAttempts\Model\Table\AttemptsTableInterface
+     * @return \LoginAttempts\Model\Table\AttemptsTableInterface|Table
      */
     protected function getAttemptsTable()
     {
-        return TableRegistry::getTableLocator()->get($this->getConfig('attemptsStorageModel'));
+        return $this->getTableLocator()->get($this->getConfig('attemptsStorageModel'));
     }
 }

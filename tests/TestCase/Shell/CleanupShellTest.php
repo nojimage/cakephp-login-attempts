@@ -5,7 +5,6 @@ namespace LoginAttempts\Test\TestCase\Shell;
 
 use Cake\Console\ConsoleIo;
 use Cake\I18n\FrozenTime;
-use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use LoginAttempts\Model\Table\AttemptsTable;
 use LoginAttempts\Shell\CleanupShell;
@@ -44,7 +43,7 @@ class CleanupShellTest extends TestCase
         parent::setUp();
         $this->io = $this->getMockBuilder(ConsoleIo::class)->getMock();
         $this->Cleanup = new CleanupShell($this->io);
-        $this->Attempts = TableRegistry::get('Attempts', ['className' => AttemptsTable::class]);
+        $this->Attempts = $this->getTableLocator()->get('Attempts', ['className' => AttemptsTable::class]);
     }
 
     /**

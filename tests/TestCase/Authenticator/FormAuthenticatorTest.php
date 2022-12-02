@@ -7,7 +7,6 @@ use Authentication\Authenticator\ResultInterface;
 use Authentication\Identifier\IdentifierInterface;
 use Cake\Http\ServerRequest;
 use Cake\I18n\FrozenTime;
-use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Security;
 use LoginAttempts\Authenticator\FormAuthenticator;
@@ -62,7 +61,7 @@ class FormAuthenticatorTest extends TestCase
         ]);
 
         // set password
-        $this->Attempts = TableRegistry::get('LoginAttempts.Attempts');
+        $this->Attempts = $this->getTableLocator()->get('LoginAttempts.Attempts');
 
         $this->salt = Security::getSalt();
         Security::setSalt('DYhG93b0qyJfIxfs2guVoUubWwvniR2G0FgaC9mi');

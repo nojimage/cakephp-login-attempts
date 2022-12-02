@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace LoginAttempts\Test\TestCase\Model\Table;
 
 use Cake\I18n\FrozenTime;
-use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use LoginAttempts\Model\Entity\Attempt;
 use LoginAttempts\Model\Table\AttemptsTable;
@@ -36,7 +35,7 @@ class AttemptsTableTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->Attempts = TableRegistry::get('Attempts', ['className' => AttemptsTable::class]);
+        $this->Attempts = $this->getTableLocator()->get('Attempts', ['className' => AttemptsTable::class]);
     }
 
     /**
