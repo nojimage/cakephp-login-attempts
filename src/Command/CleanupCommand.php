@@ -1,15 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace LoginAttempts\Shell;
+namespace LoginAttempts\Command;
 
+use Cake\Command\Command;
+use Cake\Console\Arguments;
+use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
-use Cake\Console\Shell;
 
 /**
- * Cleaning up attempts table shell command.
+ * Cleaning up attempts table console command.
  */
-class CleanupShell extends Shell
+class CleanupCommand extends Command
 {
     /**
      * Gets the option parser instance and configures it.
@@ -26,13 +28,11 @@ class CleanupShell extends Shell
     }
 
     /**
-     * main() method.
-     *
-     * @return void
+     * @inheritDoc
      */
-    public function main()
+    public function execute(Arguments $args, ConsoleIo $io)
     {
-        $this->loadModel('LoginAttempts.Attempts')->cleanup();
-        $this->out('Cleaning up attempts table.');
+        $this->getTableLocator()->get('LoginAttempts.Attempts')->cleanup();
+        $io->out('Cleaning up attempts table.');
     }
 }

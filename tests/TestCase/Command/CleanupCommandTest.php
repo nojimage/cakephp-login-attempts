@@ -1,18 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace LoginAttempts\Test\TestCase\Shell;
+namespace LoginAttempts\Test\TestCase\Command;
 
+use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\I18n\FrozenTime;
 use Cake\TestSuite\TestCase;
 use LoginAttempts\Model\Table\AttemptsTable;
-use LoginAttempts\Shell\CleanupShell;
+use LoginAttempts\Command\CleanupCommand;
 
 /**
- * LoginAttempts\Shell\CleanupShell Test Case
+ * LoginAttempts\Command\CleanupCommand Test Case
  */
-class CleanupShellTest extends TestCase
+class CleanupCommandTest extends TestCase
 {
     /**
      * Fixtures
@@ -20,7 +21,7 @@ class CleanupShellTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.LoginAttempts.Shell\CleanupShell\Attempts',
+        'plugin.LoginAttempts.Command\CleanupCommand\Attempts',
     ];
 
     /**
@@ -29,9 +30,19 @@ class CleanupShellTest extends TestCase
     private $Attempts;
 
     /**
-     * @var CleanupShell
+     * @var CleanupCommand
      */
     private $Cleanup;
+
+    /**
+     * @var Arguments&\PHPUnit\Framework\MockObject\MockObject|\PHPUnit\Framework\MockObject\MockObject
+     */
+    private $args;
+
+    /**
+     * @var ConsoleIo&\PHPUnit\Framework\MockObject\MockObject|\PHPUnit\Framework\MockObject\MockObject
+     */
+    private $io;
 
     /**
      * setUp method
@@ -42,7 +53,8 @@ class CleanupShellTest extends TestCase
     {
         parent::setUp();
         $this->io = $this->getMockBuilder(ConsoleIo::class)->getMock();
-        $this->Cleanup = new CleanupShell($this->io);
+        $this->args = $this->getMockBuilder(Arguments::class)->disableOriginalConstructor()->getMock();
+        $this->Cleanup = new CleanupCommand();
         $this->Attempts = $this->getTableLocator()->get('Attempts', ['className' => AttemptsTable::class]);
     }
 
@@ -66,11 +78,11 @@ class CleanupShellTest extends TestCase
     public function testMain(): void
     {
         FrozenTime::setTestNow('2017-01-01 12:23:34');
-        $this->Cleanup->main();
+        $this->Cleanup->execute($this->args, $this->io);
         $this->assertCount(1, $this->Attempts->find()->all());
 
         FrozenTime::setTestNow('2017-01-02 12:23:35');
-        $this->Cleanup->main();
+        $this->Cleanup->execute($this->args, $this->io);
         $this->assertCount(0, $this->Attempts->find()->all(), 'cleanup expired');
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace LoginAttempts\Test\Fixture\Shell\CleanupShell;
+namespace LoginAttempts\Test\Fixture\Command\CleanupCommand;
 
 use LoginAttempts\Test\Fixture\AttemptsFixture as BaseFixture;
 
