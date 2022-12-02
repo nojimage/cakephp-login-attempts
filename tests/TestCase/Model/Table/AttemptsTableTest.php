@@ -96,7 +96,7 @@ class AttemptsTableTest extends TestCase
      */
     public function testFail()
     {
-        FrozenTime::setTestNow(FrozenTime::parse('2017-01-01 12:23:34'));
+        FrozenTime::setTestNow('2017-01-01 12:23:34');
         $result = $this->Attempts->fail('192.168.1.11', 'Users.login', '+ 1days');
 
         $this->assertInstanceOf(Attempt::class, $result);
@@ -115,7 +115,7 @@ class AttemptsTableTest extends TestCase
      */
     public function testCheck()
     {
-        FrozenTime::setTestNow(FrozenTime::parse('2017-01-01 12:23:34'));
+        FrozenTime::setTestNow('2017-01-01 12:23:34');
 
         $result = $this->Attempts->check('192.168.1.11', 'Users.login', 1);
         $this->assertTrue($result, 'table is empty, then true');
@@ -130,10 +130,10 @@ class AttemptsTableTest extends TestCase
         $this->assertTrue($result, 'other ip access');
         $result = $this->Attempts->check('192.168.1.11', 'Administrators.login', 1);
         $this->assertTrue($result, 'other action request');
-        FrozenTime::setTestNow(FrozenTime::parse('2017-01-02 12:23:34'));
+        FrozenTime::setTestNow('2017-01-02 12:23:34');
         $result = $this->Attempts->check('192.168.1.11', 'Users.login', 1);
         $this->assertFalse($result, 'unexpired');
-        FrozenTime::setTestNow(FrozenTime::parse('2017-01-02 12:23:35'));
+        FrozenTime::setTestNow('2017-01-02 12:23:35');
         $result = $this->Attempts->check('192.168.1.11', 'Users.login', 1);
         $this->assertTrue($result, 'expired');
     }
@@ -145,7 +145,7 @@ class AttemptsTableTest extends TestCase
      */
     public function testReset()
     {
-        FrozenTime::setTestNow(FrozenTime::parse('2017-01-01 12:23:34'));
+        FrozenTime::setTestNow('2017-01-01 12:23:34');
 
         $this->Attempts->fail('192.168.1.11', 'Users.login', '+ 1days');
         $this->Attempts->fail('192.168.1.12', 'Users.login', '+ 1days');
@@ -162,16 +162,16 @@ class AttemptsTableTest extends TestCase
      */
     public function testCleanup()
     {
-        FrozenTime::setTestNow(FrozenTime::parse('2017-01-01 12:23:34'));
+        FrozenTime::setTestNow('2017-01-01 12:23:34');
 
         $this->Attempts->fail('192.168.1.11', 'Users.login', '+ 1days');
         $this->Attempts->fail('192.168.1.12', 'Users.login', '+ 1days');
 
-        FrozenTime::setTestNow(FrozenTime::parse('2017-01-01 12:23:34'));
+        FrozenTime::setTestNow('2017-01-01 12:23:34');
         $this->Attempts->cleanup();
         $this->assertCount(2, $this->Attempts->find()->all());
 
-        FrozenTime::setTestNow(FrozenTime::parse('2017-01-02 12:23:35'));
+        FrozenTime::setTestNow('2017-01-02 12:23:35');
          $this->Attempts->cleanup();
         $this->assertCount(0, $this->Attempts->find()->all(), 'cleanup expired');
     }

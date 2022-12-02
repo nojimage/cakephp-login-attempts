@@ -66,11 +66,11 @@ class CleanupShellTest extends TestCase
      */
     public function testMain()
     {
-        FrozenTime::setTestNow(FrozenTime::parse('2017-01-01 12:23:34'));
+        FrozenTime::setTestNow('2017-01-01 12:23:34');
         $this->Cleanup->main();
         $this->assertCount(1, $this->Attempts->find()->all());
 
-        FrozenTime::setTestNow(FrozenTime::parse('2017-01-02 12:23:35'));
+        FrozenTime::setTestNow('2017-01-02 12:23:35');
         $this->Cleanup->main();
         $this->assertCount(0, $this->Attempts->find()->all(), 'cleanup expired');
     }

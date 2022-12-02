@@ -155,7 +155,7 @@ class FormAuthenticatorTest extends TestCase
      */
     public function testAuthenticateFailure()
     {
-        FrozenTime::setTestNow(FrozenTime::parse('2017-01-01 12:23:34'));
+        FrozenTime::setTestNow('2017-01-01 12:23:34');
 
         $request = $this->getRequest('/login', [
             'username' => 'foo',
@@ -180,7 +180,7 @@ class FormAuthenticatorTest extends TestCase
      */
     public function testAuthenticateLimitAttempts()
     {
-        FrozenTime::setTestNow(FrozenTime::parse('2017-01-01 12:23:34'));
+        FrozenTime::setTestNow('2017-01-01 12:23:34');
 
         $request = $this->getRequest('/login', [
             'username' => 'foo',
@@ -191,7 +191,7 @@ class FormAuthenticatorTest extends TestCase
         $this->assertFalse($result->isValid());
 
         // expired
-        FrozenTime::setTestNow(FrozenTime::parse('2017-01-02 12:23:35'));
+        FrozenTime::setTestNow('2017-01-02 12:23:35');
 
         $request = $this->getRequest('/login', [
             'username' => 'foo',
@@ -211,7 +211,7 @@ class FormAuthenticatorTest extends TestCase
      */
     public function testAuthenticateSuccess()
     {
-        FrozenTime::setTestNow(FrozenTime::parse('2017-01-01 12:23:34'));
+        FrozenTime::setTestNow('2017-01-01 12:23:34');
 
         $result = $this->Attempts->find()->where(['ip' => '192.168.1.22'])->all();
         $this->assertNotNull($result);
