@@ -82,7 +82,7 @@ class AttemptsTable extends Table implements AttemptsTableInterface
      * @param string $duration Duration to disable login.
      * @return \LoginAttempts\Model\Entity\Attempt|false
      */
-    public function fail($ip, $action, $duration)
+    public function fail(string $ip, string $action, string $duration)
     {
         $attempt = $this->newEntity([
             'ip' => $ip,
@@ -102,7 +102,7 @@ class AttemptsTable extends Table implements AttemptsTableInterface
      * @param int $limit Number of trial limitation.
      * @return bool
      */
-    public function check($ip, $action, $limit)
+    public function check(string $ip, string $action, int $limit): bool
     {
         $count = $this->find()->where([
                 'ip' => $ip,
@@ -120,7 +120,7 @@ class AttemptsTable extends Table implements AttemptsTableInterface
      * @param string $action A request target action.
      * @return int
      */
-    public function reset($ip, $action)
+    public function reset(string $ip, string $action): int
     {
         return $this->deleteAll([
                 'ip' => $ip,
@@ -133,7 +133,7 @@ class AttemptsTable extends Table implements AttemptsTableInterface
      *
      * @return int
      */
-    public function cleanup()
+    public function cleanup(): int
     {
         return $this->deleteAll([
                 'expires <' => FrozenTime::now(),

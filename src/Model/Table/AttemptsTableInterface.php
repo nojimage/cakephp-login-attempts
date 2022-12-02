@@ -13,7 +13,7 @@ interface AttemptsTableInterface
      * @param string $duration Duration to disable login.
      * @return \Cake\Datasource\EntityInterface|false
      */
-    public function fail($ip, $action, $duration);
+    public function fail(string $ip, string $action, string $duration);
 
     /**
      * check attempts less than $limit
@@ -23,7 +23,7 @@ interface AttemptsTableInterface
      * @param int $limit Number of trial limitation.
      * @return bool
      */
-    public function check($ip, $action, $limit);
+    public function check(string $ip, string $action, int $limit): bool;
 
     /**
      * reset on login success
@@ -32,5 +32,5 @@ interface AttemptsTableInterface
      * @param string $action A request target action.
      * @return int
      */
-    public function reset($ip, $action);
+    public function reset(string $ip, string $action): int;
 }

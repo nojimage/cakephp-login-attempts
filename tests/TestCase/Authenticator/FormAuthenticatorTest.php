@@ -9,7 +9,10 @@ use Cake\Http\ServerRequest;
 use Cake\I18n\FrozenTime;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Security;
+use Laminas\Diactoros\Uri;
 use LoginAttempts\Authenticator\FormAuthenticator;
+use LoginAttempts\Model\Entity\Attempt;
+use LoginAttempts\Model\Table\AttemptsTable;
 
 /**
  * test for FormAuthenticator
@@ -41,7 +44,7 @@ class FormAuthenticatorTest extends TestCase
     private $salt;
 
     /**
-     * @var \LoginAttempts\Model\Table\AttemptsTable
+     * @var AttemptsTable
      */
     private $Attempts;
 
@@ -84,23 +87,10 @@ class FormAuthenticatorTest extends TestCase
      * @param string $remoteAddr REMOTE_ADDR env
      * @return ServerRequest
      */
-    private function getRequest($url, $post, $remoteAddr = '192.168.1.11')
+    private function getRequest(string $url, ?array $post, string $remoteAddr = '192.168.1.11'): ServerRequest
     {
-        if (class_exists('\Laminas\Diactoros\Uri')) {
-            return (new ServerRequest([
-                'uri' => new \Laminas\Diactoros\Uri($url),
-                'post' => $post,
-            ]))->withEnv('REMOTE_ADDR', $remoteAddr);
-        }
-        if (class_exists('\Zend\Diactoros\Uri')) {
-            return (new ServerRequest([
-                'uri' => new \Zend\Diactoros\Uri($url),
-                'post' => $post,
-            ]))->withEnv('REMOTE_ADDR', $remoteAddr);
-        }
-
         return (new ServerRequest([
-            'url' => $url,
+            'uri' => new Uri($url),
             'post' => $post,
         ]))->withEnv('REMOTE_ADDR', $remoteAddr);
     }
@@ -108,7 +98,7 @@ class FormAuthenticatorTest extends TestCase
     /**
      * test Authenticate
      */
-    public function testAuthenticateNotLoginUrl()
+    public function testAuthenticateNotLoginUrl(): void
     {
         $now = FrozenTime::parse('2017-01-02 12:23:36');
         FrozenTime::setTestNow($now);
@@ -132,7 +122,7 @@ class FormAuthenticatorTest extends TestCase
     /**
      * test Authenticate
      */
-    public function testAuthenticateCredentialsMissing()
+    public function testAuthenticateCredentialsMissing(): void
     {
         $now = FrozenTime::parse('2017-01-02 12:23:36');
         FrozenTime::setTestNow($now);
@@ -153,7 +143,7 @@ class FormAuthenticatorTest extends TestCase
     /**
      * test Authenticate
      */
-    public function testAuthenticateFailure()
+    public function testAuthenticateFailure(): void
     {
         FrozenTime::setTestNow('2017-01-01 12:23:34');
 
@@ -167,7 +157,7 @@ class FormAuthenticatorTest extends TestCase
 
         // created attempt record on auth failure
         $record = $this->Attempts->find()->where(['ip' => '192.168.1.12'])->first();
-        /** @var \LoginAttempts\Model\Entity\Attempt $record */
+        /** @var Attempt $record */
         $this->assertNotEmpty($record, 'created attempt record on auth failure');
 
         $this->assertSame('192.168.1.12', $record->ip);
@@ -178,7 +168,7 @@ class FormAuthenticatorTest extends TestCase
     /**
      * test Authenticate
      */
-    public function testAuthenticateLimitAttempts()
+    public function testAuthenticateLimitAttempts(): void
     {
         FrozenTime::setTestNow('2017-01-01 12:23:34');
 
@@ -209,7 +199,7 @@ class FormAuthenticatorTest extends TestCase
     /**
      * test Authenticate
      */
-    public function testAuthenticateSuccess()
+    public function testAuthenticateSuccess(): void
     {
         FrozenTime::setTestNow('2017-01-01 12:23:34');
 

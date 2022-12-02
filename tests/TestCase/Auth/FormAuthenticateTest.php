@@ -7,9 +7,12 @@ use Cake\Controller\ComponentRegistry;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\I18n\FrozenTime;
+use Cake\ORM\Table;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Security;
 use LoginAttempts\Auth\FormAuthenticate;
+use LoginAttempts\Model\Entity\Attempt;
+use LoginAttempts\Model\Table\AttemptsTable;
 
 /**
  * test for FormAuthenticate
@@ -47,12 +50,12 @@ class FormAuthenticateTest extends TestCase
     private $salt;
 
     /**
-     * @var \LoginAttempts\Model\Table\AttemptsTable
+     * @var AttemptsTable
      */
     private $Attempts;
 
     /**
-     * @var \Cake\ORM\Table
+     * @var Table
      */
     private $Users;
 
@@ -91,7 +94,7 @@ class FormAuthenticateTest extends TestCase
     /**
      * test Authenticate
      */
-    public function testAuthenticateFailure()
+    public function testAuthenticateFailure(): void
     {
         FrozenTime::setTestNow('2017-01-01 12:23:34');
 
@@ -107,7 +110,7 @@ class FormAuthenticateTest extends TestCase
 
         // created attempt record on auth failure
         $record = $this->Attempts->find()->where(['ip' => '192.168.1.12'])->first();
-        /** @var \LoginAttempts\Model\Entity\Attempt $record */
+        /** @var Attempt $record */
         $this->assertNotEmpty($record, 'created attempt record on auth failure');
 
         $this->assertSame('192.168.1.12', $record->ip);
@@ -118,7 +121,7 @@ class FormAuthenticateTest extends TestCase
     /**
      * test Authenticate
      */
-    public function testAuthenticateLimitAttempts()
+    public function testAuthenticateLimitAttempts(): void
     {
         FrozenTime::setTestNow('2017-01-01 12:23:34');
 
@@ -148,7 +151,7 @@ class FormAuthenticateTest extends TestCase
     /**
      * test Authenticate
      */
-    public function testAuthenticateSuccess()
+    public function testAuthenticateSuccess(): void
     {
         FrozenTime::setTestNow('2017-01-01 12:23:34');
 

@@ -55,7 +55,7 @@ class AttemptsTableTest extends TestCase
      *
      * @dataProvider dataValidation
      */
-    public function testValidation($field, $data, $expects)
+    public function testValidation($field, $data, $expects): void
     {
         $entity = $this->Attempts->newEntity([
             $field => $data,
@@ -73,7 +73,7 @@ class AttemptsTableTest extends TestCase
      *
      * @return array
      */
-    public function dataValidation()
+    public function dataValidation(): array
     {
         return [
             ['ip', null, 'This field cannot be left empty'],
@@ -94,7 +94,7 @@ class AttemptsTableTest extends TestCase
      *
      * @return void
      */
-    public function testFail()
+    public function testFail(): void
     {
         FrozenTime::setTestNow('2017-01-01 12:23:34');
         $result = $this->Attempts->fail('192.168.1.11', 'Users.login', '+ 1days');
@@ -113,7 +113,7 @@ class AttemptsTableTest extends TestCase
      *
      * @return void
      */
-    public function testCheck()
+    public function testCheck(): void
     {
         FrozenTime::setTestNow('2017-01-01 12:23:34');
 
@@ -143,7 +143,7 @@ class AttemptsTableTest extends TestCase
      *
      * @return void
      */
-    public function testReset()
+    public function testReset(): void
     {
         FrozenTime::setTestNow('2017-01-01 12:23:34');
 
@@ -160,7 +160,7 @@ class AttemptsTableTest extends TestCase
      *
      * @return void
      */
-    public function testCleanup()
+    public function testCleanup(): void
     {
         FrozenTime::setTestNow('2017-01-01 12:23:34');
 

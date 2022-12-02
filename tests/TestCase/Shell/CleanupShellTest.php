@@ -53,8 +53,7 @@ class CleanupShellTest extends TestCase
      */
     public function tearDown(): void
     {
-        unset($this->Cleanup);
-        unset($this->Attempts);
+        unset($this->Cleanup, $this->Attempts);
 
         parent::tearDown();
     }
@@ -64,7 +63,7 @@ class CleanupShellTest extends TestCase
      *
      * @return void
      */
-    public function testMain()
+    public function testMain(): void
     {
         FrozenTime::setTestNow('2017-01-01 12:23:34');
         $this->Cleanup->main();

@@ -7,7 +7,6 @@ use Cake\Auth\FormAuthenticate as BaseFormAuthenticate;
 use Cake\Controller\ComponentRegistry;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
-use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\ORM\Table;
 
 /**
@@ -15,8 +14,6 @@ use Cake\ORM\Table;
  */
 class FormAuthenticate extends BaseFormAuthenticate
 {
-    use LocatorAwareTrait;
-
     /**
      * construct
      *
@@ -39,7 +36,7 @@ class FormAuthenticate extends BaseFormAuthenticate
      *
      * @return string
      */
-    protected function _getAction()
+    protected function _getAction(): string
     {
         return $this->getConfig('userModel') . '.' . $this->getConfig('attemptAction');
     }
@@ -75,7 +72,7 @@ class FormAuthenticate extends BaseFormAuthenticate
     }
 
     /**
-     * @return \LoginAttempts\Model\Table\AttemptsTableInterface|Table
+     * @return Table|\LoginAttempts\Model\Table\AttemptsTableInterface
      */
     protected function getAttemptsTable()
     {

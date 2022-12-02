@@ -41,7 +41,7 @@ class FormAuthenticator extends BaseFormAuthenticator
      *
      * @return string
      */
-    protected function _getAction()
+    protected function _getAction(): string
     {
         return $this->getConfig('userModel') . '.' . $this->getConfig('attemptAction');
     }
@@ -76,7 +76,7 @@ class FormAuthenticator extends BaseFormAuthenticator
     }
 
     /**
-     * @return \LoginAttempts\Model\Table\AttemptsTableInterface|Table
+     * @return Table|\LoginAttempts\Model\Table\AttemptsTableInterface
      */
     protected function getAttemptsTable()
     {
