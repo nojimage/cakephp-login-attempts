@@ -9,7 +9,6 @@ use Cake\Http\ServerRequest;
 use Cake\I18n\FrozenTime;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Security;
-use Laminas\Diactoros\Uri;
 use LoginAttempts\Authenticator\FormAuthenticator;
 use LoginAttempts\Model\Entity\Attempt;
 use LoginAttempts\Model\Table\AttemptsTable;
@@ -89,8 +88,21 @@ class FormAuthenticatorTest extends TestCase
      */
     private function getRequest(string $url, ?array $post, string $remoteAddr = '192.168.1.11'): ServerRequest
     {
+        if (class_exists('\Laminas\Diactoros\Uri')) {
+            return (new ServerRequest([
+                'uri' => new \Laminas\Diactoros\Uri($url),
+                'post' => $post,
+            ]))->withEnv('REMOTE_ADDR', $remoteAddr);
+        }
+        if (class_exists('\Zend\Diactoros\Uri')) {
+            return (new ServerRequest([
+                'uri' => new \Zend\Diactoros\Uri($url),
+                'post' => $post,
+            ]))->withEnv('REMOTE_ADDR', $remoteAddr);
+        }
+
         return (new ServerRequest([
-            'uri' => new Uri($url),
+            'url' => $url,
             'post' => $post,
         ]))->withEnv('REMOTE_ADDR', $remoteAddr);
     }
