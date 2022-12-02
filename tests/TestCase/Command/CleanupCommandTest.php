@@ -7,8 +7,8 @@ use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\I18n\FrozenTime;
 use Cake\TestSuite\TestCase;
-use LoginAttempts\Model\Table\AttemptsTable;
 use LoginAttempts\Command\CleanupCommand;
+use LoginAttempts\Model\Table\AttemptsTable;
 
 /**
  * LoginAttempts\Command\CleanupCommand Test Case
