@@ -17,8 +17,8 @@
 
 ## Requirements
 
-- CakePHP >= 3.5
-- (Optional) CakePHP Authentication plugin 1.x
+- CakePHP >= 4.0
+- (Optional) CakePHP Authentication plugin 2.x
 
 ## Installation
 
@@ -32,16 +32,10 @@ composer require nojimage/cakephp-login-attempts
 
 ### Load plugin
 
-(CakePHP >= 3.6.0) Load the plugin by adding the following statement in your project's `src/Application.php`:
+Load the plugin by adding the following statement in your project's `src/Application.php`:
 
 ```
 $this->addPlugin('LoginAttempts');
-```
-
-(CakePHP <= 3.5.x) Load the plugin by adding the following statement in your project's `config/bootstrap.php` file:
-
-```
-Plugin::load('LoginAttempts');
 ```
 
 ### Create table
@@ -55,6 +49,8 @@ bin/cake migrations migrate -p LoginAttempts
 ### Usage
 
 Use `LoginAttempts.Form` authenticator instead of `Form`.
+
+If you are using deprecated `AuthComponent`:
 
 ```
         $this->loadComponent('Auth', [

@@ -6,7 +6,6 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * AuthUsersFixture
- *
  */
 class AuthUsersFixture extends TestFixture
 {
@@ -27,7 +26,7 @@ class AuthUsersFixture extends TestFixture
     ];
     // @codingStandardsIgnoreEnd
 
-    public function init()
+    public function init(): void
     {
         parent::init();
         $this->records = [];

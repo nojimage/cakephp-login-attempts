@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace LoginAttempts\Test\TestCase\Model\Table;
 
@@ -32,7 +33,7 @@ class AttemptsTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->Attempts = TableRegistry::get('Attempts', ['className' => AttemptsTable::class]);
@@ -43,7 +44,7 @@ class AttemptsTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->Attempts);
         Time::setTestNow();
@@ -120,21 +121,16 @@ class AttemptsTableTest extends TestCase
         $result = $this->Attempts->check('192.168.1.11', 'Users.login', 1);
         $this->assertTrue($result, 'table is empty, then true');
 
-        //
         $this->Attempts->fail('192.168.1.11', 'Users.login', '+ 1days');
         $result = $this->Attempts->check('192.168.1.11', 'Users.login', 1);
         $this->assertFalse($result, 'has one record, then false');
 
-        //
         $result = $this->Attempts->check('192.168.1.11', 'Users.login', 2);
         $this->assertTrue($result, 'below limitation count');
-        //
         $result = $this->Attempts->check('192.168.1.12', 'Users.login', 1);
         $this->assertTrue($result, 'other ip access');
-        //
         $result = $this->Attempts->check('192.168.1.11', 'Administrators.login', 1);
         $this->assertTrue($result, 'other action request');
-        //
         Time::setTestNow(Time::parse('2017-01-02 12:23:34'));
         $result = $this->Attempts->check('192.168.1.11', 'Users.login', 1);
         $this->assertFalse($result, 'unexpired');

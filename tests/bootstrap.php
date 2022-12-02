@@ -1,7 +1,5 @@
 <?php
-
-use Cake\Core\Configure;
-use Cake\Core\Plugin;
+declare(strict_types=1);
 
 /**
  * Test suite bootstrap for LoginAttempts.
@@ -19,7 +17,7 @@ $findRoot = function ($root) {
         }
     } while ($root !== $lastRoot);
 
-    throw new Exception("Cannot find the root of the application, unable to run tests");
+    throw new Exception('Cannot find the root of the application, unable to run tests');
 };
 $root = $findRoot(__FILE__);
 unset($findRoot);
@@ -28,10 +26,3 @@ $here = __DIR__;
 
 chdir($root);
 require $root . '/vendor/cakephp/cakephp/tests/bootstrap.php';
-
-// Disable deprecations for now when using 3.6
-if (version_compare(Configure::version(), '3.6.0', '>=')) {
-    error_reporting(E_ALL ^ E_USER_DEPRECATED);
-}
-Plugin::load('LoginAttempts', ['path' => dirname(__DIR__) . DS]);
-error_reporting(E_ALL);

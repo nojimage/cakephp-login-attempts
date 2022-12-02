@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace LoginAttempts\Test\TestCase\Auth;
 
@@ -6,13 +7,10 @@ use Cake\Controller\ComponentRegistry;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\I18n\Time;
-use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Security;
 use LoginAttempts\Auth\FormAuthenticate;
-use LoginAttempts\Model\Entity\Attempt;
-use LoginAttempts\Model\Table\AttemptsTable;
 
 /**
  * test for FormAuthenticate
@@ -50,21 +48,19 @@ class FormAuthenticateTest extends TestCase
     private $salt;
 
     /**
-     *
-     * @var AttemptsTable
+     * @var \LoginAttempts\Model\Table\AttemptsTable
      */
     private $Attempts;
 
     /**
-     *
-     * @var Table
+     * @var \Cake\ORM\Table
      */
     private $Users;
 
     /**
      * Sets up
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->Collection = $this->getMockBuilder(ComponentRegistry::class)->getMock();
@@ -85,7 +81,7 @@ class FormAuthenticateTest extends TestCase
     /**
      * Tears down
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->auth, $this->Users, $this->Attempts);
         Security::setSalt($this->salt);
@@ -112,7 +108,7 @@ class FormAuthenticateTest extends TestCase
 
         // created attempt record on auth failure
         $record = $this->Attempts->find()->where(['ip' => '192.168.1.12'])->first();
-        /* @var $record Attempt */
+        /** @var \LoginAttempts\Model\Entity\Attempt $record */
         $this->assertNotEmpty($record, 'created attempt record on auth failure');
 
         $this->assertSame('192.168.1.12', $record->ip);

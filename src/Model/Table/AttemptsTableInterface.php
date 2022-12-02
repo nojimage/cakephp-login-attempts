@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace LoginAttempts\Model\Table;
 
@@ -10,7 +11,7 @@ interface AttemptsTableInterface
      * @param string $ip A request client ip.
      * @param string $action A request target action.
      * @param string $duration Duration to disable login.
-     * @return bool
+     * @return \Cake\Datasource\EntityInterface|false
      */
     public function fail($ip, $action, $duration);
 
@@ -29,7 +30,7 @@ interface AttemptsTableInterface
      *
      * @param string $ip A request client ip.
      * @param string $action A request target action.
-     * @return bool
+     * @return int
      */
     public function reset($ip, $action);
 }

@@ -18,47 +18,37 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        cakephp-version: ['3.8.*', '3.9.*', '3.10.*']
+        cakephp-version: ['4.0.*', '4.1.*', '4.2.*']
         php-version: ['7.2', '7.4']
         db-type: ['mysql']
         prefer-lowest: ['']
         coverage: ['no']
         include:
-          - cakephp-version: '3.5.*'
-            php-version: '5.6'
-            db-type: 'mysql:5.6'
-            prefer-lowest: ''
-            coverage: 'no'
-          - cakephp-version: '3.5.*'
+          - cakephp-version: '4.0.*'
             php-version: '7.2'
             db-type: 'mysql:5.6'
             prefer-lowest: ''
             coverage: 'no'
 
-          - cakephp-version: '3.6.*'
-            php-version: '5.6'
-            db-type: 'mysql:5.6'
-            prefer-lowest: ''
-            coverage: 'no'
-          - cakephp-version: '3.6.*'
+          - cakephp-version: '4.1.*'
             php-version: '7.2'
             db-type: 'mysql:5.6'
             prefer-lowest: ''
             coverage: 'no'
 
-          - cakephp-version: '3.7.*'
-            php-version: '5.6'
-            db-type: 'mysql:5.6'
-            prefer-lowest: ''
-            coverage: 'no'
-          - cakephp-version: '3.7.*'
+          - cakephp-version: '4.2.*'
             php-version: '7.3'
+            db-type: 'mysql:5.6'
+            prefer-lowest: ''
+            coverage: 'no'
+          - cakephp-version: '4.2.*'
+            php-version: '8.0'
             db-type: 'mysql:5.6'
             prefer-lowest: ''
             coverage: 'no'
 
           - php-version: '7.4'
-            cakephp-version: '3.9.*'
+            cakephp-version: '4.2.*'
             db-type: 'mysql'
             prefer-lowest: ''
             coverage: 'coverage'
@@ -104,7 +94,7 @@ jobs:
 
       - name: Require Authentication Plugin
         run: |
-          composer require --dev cakephp/authentication:^1.0
+          composer require --dev cakephp/authentication:^2.0
 
       - name: composer install
         run: |
@@ -149,7 +139,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
+          php-version: '8.0'
           extensions: mbstring, intl, apcu
           coverage: none
 
@@ -168,7 +158,7 @@ jobs:
           key: ${{ runner.os }}-composer-${{ steps.key-date.outputs.date }}-${{ hashFiles('composer.json') }}-${{ matrix.prefer-lowest }}
 
       - name: Get CodeSniffer
-        run: composer require cakephp/cakephp-codesniffer:^3.0
+        run: composer require cakephp/cakephp-codesniffer:^4.0
 #
 #      - name: composer install
 #        run: composer stan-setup

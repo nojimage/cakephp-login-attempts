@@ -1,22 +1,21 @@
 <?php
+declare(strict_types=1);
 
 namespace LoginAttempts\Model\Table;
 
-use Cake\Datasource\EntityInterface;
 use Cake\I18n\Time;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
-use LoginAttempts\Model\Entity\Attempt;
 
 /**
  * Attempts Model
  *
- * @method Attempt newEntity($data = null, array $options = [])
- * @method Attempt[] newEntities(array $data, array $options = [])
- * @method Attempt patchEntity(EntityInterface $entity, array $data, array $options = [])
- * @method Attempt[] patchEntities($entities, array $data, array $options = [])
- * @method Attempt get($primaryKey, $options = [])
- * @method Attempt|bool save(EntityInterface $entity, $options = [])
+ * @method \LoginAttempts\Model\Entity\Attempt newEntity($data = null, array $options = [])
+ * @method \LoginAttempts\Model\Entity\Attempt[] newEntities(array $data, array $options = [])
+ * @method \LoginAttempts\Model\Entity\Attempt patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \LoginAttempts\Model\Entity\Attempt[] patchEntities($entities, array $data, array $options = [])
+ * @method \LoginAttempts\Model\Entity\Attempt get($primaryKey, $options = [])
+ * @method \LoginAttempts\Model\Entity\Attempt|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  */
 class AttemptsTable extends Table implements AttemptsTableInterface
 {
@@ -26,7 +25,7 @@ class AttemptsTable extends Table implements AttemptsTableInterface
      * @param array $config The configuration for the Table.
      * @return void
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         $this->setTable('attempts');
         $this->setDisplayField('ip');
@@ -43,34 +42,34 @@ class AttemptsTable extends Table implements AttemptsTableInterface
     /**
      * Default validation rules.
      *
-     * @param Validator $validator Validator instance.
-     * @return Validator
+     * @param \Cake\Validation\Validator $validator Validator instance.
+     * @return \Cake\Validation\Validator
      */
-    public function validationDefault(Validator $validator)
+    public function validationDefault(Validator $validator): Validator
     {
         $validator
             ->add('id', 'valid', ['rule' => 'numeric'])
-            ->allowEmpty('id', 'create');
+            ->allowEmptyString('id', 'create');
 
         $validator
             ->requirePresence('ip', 'create')
-            ->notEmpty('ip')
+            ->notEmptyString('ip')
             ->add('ip', 'ip', [
                 'rule' => 'ip',
-                'message' => __d('login_attemts', 'invalid IP address'),
+                'message' => __d('login_attempts', 'invalid IP address'),
             ]);
 
         $validator
             ->requirePresence('action', 'create')
-            ->notEmpty('action');
+            ->notEmptyString('action');
 
         $validator
             ->requirePresence('expires', 'create')
-            ->notEmpty('expires');
+            ->notEmptyDateTime('expires');
 
         $validator
             ->requirePresence('created_at', 'create')
-            ->notEmpty('created_at');
+            ->notEmptyDateTime('created_at');
 
         return $validator;
     }
@@ -81,7 +80,7 @@ class AttemptsTable extends Table implements AttemptsTableInterface
      * @param string $ip A request client ip.
      * @param string $action A request target action.
      * @param string $duration Duration to disable login.
-     * @return bool
+     * @return \LoginAttempts\Model\Entity\Attempt|false
      */
     public function fail($ip, $action, $duration)
     {
@@ -119,7 +118,7 @@ class AttemptsTable extends Table implements AttemptsTableInterface
      *
      * @param string $ip A request client ip.
      * @param string $action A request target action.
-     * @return bool
+     * @return int
      */
     public function reset($ip, $action)
     {
@@ -132,7 +131,7 @@ class AttemptsTable extends Table implements AttemptsTableInterface
     /**
      * cleanup expired data
      *
-     * @return bool
+     * @return int
      */
     public function cleanup()
     {
