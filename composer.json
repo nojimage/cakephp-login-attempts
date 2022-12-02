@@ -8,6 +8,7 @@
         "cakephp/cakephp": "~3.5"
     },
     "require-dev": {
+        "cakephp/authentication": "^1.0",
         "cakephp/cakephp-codesniffer": "^3.1",
         "phpunit/phpunit": "^5.7.14|^6.0"
     },
@@ -26,8 +27,8 @@
         }
     },
     "scripts": {
-        "cs-check": "phpcs -p --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests",
-        "cs-fix": "phpcbf -p --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests"
+        "cs-check": "phpcs -p --extensions=php ./src ./tests",
+        "cs-fix": "phpcbf -p --extensions=php ./src ./tests"
     },
     "config": {
         "sort-packages": true

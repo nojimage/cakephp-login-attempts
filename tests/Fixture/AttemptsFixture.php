@@ -10,7 +10,6 @@ use Cake\TestSuite\Fixture\TestFixture;
  */
 class AttemptsFixture extends TestFixture
 {
-
     /**
      * Fields
      *

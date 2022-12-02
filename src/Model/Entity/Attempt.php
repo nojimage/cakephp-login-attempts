@@ -16,7 +16,6 @@ use DateTimeInterface;
  */
 class Attempt extends Entity
 {
-
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *

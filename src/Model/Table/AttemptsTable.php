@@ -20,7 +20,6 @@ use LoginAttempts\Model\Entity\Attempt;
  */
 class AttemptsTable extends Table implements AttemptsTableInterface
 {
-
     /**
      * Initialize method
      *

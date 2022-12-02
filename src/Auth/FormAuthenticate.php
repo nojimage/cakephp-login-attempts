@@ -14,7 +14,6 @@ use LoginAttempts\Model\Table\AttemptsTableInterface;
  */
 class FormAuthenticate extends BaseFormAuthenticate
 {
-
     /**
      * construct
      *

@@ -14,7 +14,6 @@ use LoginAttempts\Shell\CleanupShell;
  */
 class CleanupShellTest extends TestCase
 {
-
     /**
      * Fixtures
      *

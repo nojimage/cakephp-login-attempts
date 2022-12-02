@@ -13,7 +13,6 @@ use LoginAttempts\Model\Table\AttemptsTable;
  */
 class AttemptsTableTest extends TestCase
 {
-
     /**
      * Fixtures
      *
