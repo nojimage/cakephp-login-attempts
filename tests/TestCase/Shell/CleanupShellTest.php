@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace LoginAttempts\Test\TestCase\Shell;
 
 use Cake\Console\ConsoleIo;
-use Cake\I18n\Time;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use LoginAttempts\Model\Table\AttemptsTable;
@@ -67,11 +67,11 @@ class CleanupShellTest extends TestCase
      */
     public function testMain()
     {
-        Time::setTestNow(Time::parse('2017-01-01 12:23:34'));
+        FrozenTime::setTestNow(FrozenTime::parse('2017-01-01 12:23:34'));
         $this->Cleanup->main();
         $this->assertCount(1, $this->Attempts->find()->all());
 
-        Time::setTestNow(Time::parse('2017-01-02 12:23:35'));
+        FrozenTime::setTestNow(FrozenTime::parse('2017-01-02 12:23:35'));
         $this->Cleanup->main();
         $this->assertCount(0, $this->Attempts->find()->all(), 'cleanup expired');
     }

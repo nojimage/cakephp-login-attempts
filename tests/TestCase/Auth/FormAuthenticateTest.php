@@ -6,7 +6,7 @@ namespace LoginAttempts\Test\TestCase\Auth;
 use Cake\Controller\ComponentRegistry;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
-use Cake\I18n\Time;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Security;
@@ -85,7 +85,7 @@ class FormAuthenticateTest extends TestCase
     {
         unset($this->auth, $this->Users, $this->Attempts);
         Security::setSalt($this->salt);
-        Time::setTestNow();
+        FrozenTime::setTestNow();
         parent::tearDown();
     }
 
@@ -94,7 +94,7 @@ class FormAuthenticateTest extends TestCase
      */
     public function testAuthenticateFailure()
     {
-        Time::setTestNow(Time::parse('2017-01-01 12:23:34'));
+        FrozenTime::setTestNow(FrozenTime::parse('2017-01-01 12:23:34'));
 
         $request = (new ServerRequest([
             'post' => [
@@ -121,7 +121,7 @@ class FormAuthenticateTest extends TestCase
      */
     public function testAuthenticateLimitAttempts()
     {
-        Time::setTestNow(Time::parse('2017-01-01 12:23:34'));
+        FrozenTime::setTestNow(FrozenTime::parse('2017-01-01 12:23:34'));
 
         $request = (new ServerRequest([
             'post' => [
@@ -134,7 +134,7 @@ class FormAuthenticateTest extends TestCase
         $this->assertFalse($result);
 
         // expired
-        Time::setTestNow(Time::parse('2017-01-02 12:23:35'));
+        FrozenTime::setTestNow(FrozenTime::parse('2017-01-02 12:23:35'));
         $request = (new ServerRequest([
             'post' => [
                 'username' => 'foo',
@@ -151,7 +151,7 @@ class FormAuthenticateTest extends TestCase
      */
     public function testAuthenticateSuccess()
     {
-        Time::setTestNow(Time::parse('2017-01-01 12:23:34'));
+        FrozenTime::setTestNow(FrozenTime::parse('2017-01-01 12:23:34'));
 
         $result = $this->Attempts->find()->where(['ip' => '192.168.1.22'])->all();
         $this->assertNotNull($result);
