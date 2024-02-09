@@ -7,7 +7,6 @@ use Cake\I18n\FrozenTime;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 use LoginAttempts\Model\Entity\Attempt;
-
 use function __d;
 
 /**
