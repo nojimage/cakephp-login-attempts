@@ -19,7 +19,7 @@
 
 ## 必要要件
 
-- CakePHP >= 4.0
+- CakePHP >= 4.3
 - (任意) CakePHP Authentication plugin 2.x
 
 ## インストール
@@ -29,7 +29,7 @@
 以下のようにして、Composer経由でプラグインをCakePHPアプリケーションへ追加します:
 
 ```
-composer require nojimage/cakephp-login-attempts
+composer require nojimage/cakephp-login-attempts:^2.0
 ```
 
 ### プラグインのロード
