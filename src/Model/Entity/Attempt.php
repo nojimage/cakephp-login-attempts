@@ -21,7 +21,7 @@ class Attempt extends Entity
      *
      * @var array
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'ip' => true,
         'action' => true,
         'expires' => true,

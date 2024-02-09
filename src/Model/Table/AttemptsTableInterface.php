@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace LoginAttempts\Model\Table;
 
+use Cake\Datasource\EntityInterface;
+
 interface AttemptsTableInterface
 {
     /**
@@ -13,7 +15,7 @@ interface AttemptsTableInterface
      * @param string $duration Duration to disable login.
      * @return \Cake\Datasource\EntityInterface|false
      */
-    public function fail(string $ip, string $action, string $duration);
+    public function fail(string $ip, string $action, string $duration): EntityInterface|false;
 
     /**
      * check attempts less than $limit

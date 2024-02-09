@@ -9,6 +9,7 @@ use Authentication\Authenticator\ResultInterface;
 use Authentication\Identifier\IdentifierInterface;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\ORM\Table;
+use LoginAttempts\Model\Table\AttemptsTableInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
@@ -78,8 +79,8 @@ class FormAuthenticator extends BaseFormAuthenticator
     /**
      * @return Table|\LoginAttempts\Model\Table\AttemptsTableInterface
      */
-    protected function getAttemptsTable()
+    protected function getAttemptsTable(): Table|AttemptsTableInterface
     {
-        return $this->getTableLocator()->get($this->getConfig('attemptsStorageModel'));
+        return $this->fetchTable($this->getConfig('attemptsStorageModel'));
     }
 }

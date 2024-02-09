@@ -19,8 +19,8 @@
 
 ## 必要要件
 
-- CakePHP >= 4.3
-- (任意) CakePHP Authentication plugin 2.x
+- CakePHP >= 5.0
+- [CakePHP Authentication plugin](https://github.com/cakephp/authentication)
 
 ## インストール
 
@@ -29,7 +29,7 @@
 以下のようにして、Composer経由でプラグインをCakePHPアプリケーションへ追加します:
 
 ```
-composer require nojimage/cakephp-login-attempts:^2.0
+composer require nojimage/cakephp-login-attempts:^3.0
 ```
 
 ### プラグインのロード
@@ -51,20 +51,6 @@ bin/cake migrations migrate -p LoginAttempts
 ### 使用方法
 
 `Form` 認証機能の代わりに `LoginAttempts.Form` を使用してください。
-
-非推奨となった `AuthComponent` を使う場合:
-
-```
-        $this->loadComponent('Auth', [
-            'authenticate' => [
-                'LoginAttempts.Form' => [
-                    'fields' => ['username' => 'email'],
-                    'attemptLimit' => 5,
-                    'attemptDuration' => '+5 minutes',
-                ],
-            ],
-        ]);
-```
 
 Authentication プラグインを使う場合:
 

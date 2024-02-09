@@ -6,6 +6,9 @@ namespace LoginAttempts\Model\Table;
 use Cake\I18n\FrozenTime;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use LoginAttempts\Model\Entity\Attempt;
+
+use function __d;
 
 /**
  * Attempts Model
@@ -82,7 +85,7 @@ class AttemptsTable extends Table implements AttemptsTableInterface
      * @param string $duration Duration to disable login.
      * @return \LoginAttempts\Model\Entity\Attempt|false
      */
-    public function fail(string $ip, string $action, string $duration)
+    public function fail(string $ip, string $action, string $duration): Attempt|false
     {
         $attempt = $this->newEntity([
             'ip' => $ip,

@@ -20,19 +20,19 @@ class CleanupCommandTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
+    public array $fixtures = [
         'plugin.LoginAttempts.Command\CleanupCommand\Attempts',
     ];
 
     /**
      * @var AttemptsTable
      */
-    private $Attempts;
+    private AttemptsTable $Attempts;
 
     /**
      * @var CleanupCommand
      */
-    private $Cleanup;
+    private CleanupCommand $Cleanup;
 
     /**
      * @var Arguments&\PHPUnit\Framework\MockObject\MockObject|\PHPUnit\Framework\MockObject\MockObject
@@ -55,7 +55,8 @@ class CleanupCommandTest extends TestCase
         $this->io = $this->getMockBuilder(ConsoleIo::class)->getMock();
         $this->args = $this->getMockBuilder(Arguments::class)->disableOriginalConstructor()->getMock();
         $this->Cleanup = new CleanupCommand();
-        $this->Attempts = $this->getTableLocator()->get('Attempts', ['className' => AttemptsTable::class]);
+        /** @noinspection PhpFieldAssignmentTypeMismatchInspection */
+        $this->Attempts = $this->fetchTable('Attempts', ['className' => AttemptsTable::class]);
     }
 
     /**

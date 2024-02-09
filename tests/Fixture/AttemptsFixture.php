@@ -14,6 +14,6 @@ class AttemptsFixture extends TestFixture
      *
      * @var array
      */
-    public $records = [
+    public array $records = [
     ];
 }

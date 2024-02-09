@@ -36,6 +36,7 @@ if (!getenv('DB_URL')) {
 
 chdir($root);
 require $root . '/vendor/cakephp/cakephp/tests/bootstrap.php';
+require CAKE . '/functions.php';
 
 // setup migration
 $schemaLoader = new SchemaLoader();

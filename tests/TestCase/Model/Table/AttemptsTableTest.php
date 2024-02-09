@@ -18,7 +18,7 @@ class AttemptsTableTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
+    public array $fixtures = [
         'plugin.LoginAttempts.Attempts',
     ];
 
@@ -35,7 +35,7 @@ class AttemptsTableTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->Attempts = $this->getTableLocator()->get('Attempts', ['className' => AttemptsTable::class]);
+        $this->Attempts = $this->fetchTable('Attempts', ['className' => AttemptsTable::class]);
     }
 
     /**
@@ -73,7 +73,7 @@ class AttemptsTableTest extends TestCase
      *
      * @return array
      */
-    public function dataValidation(): array
+    public static function dataValidation(): array
     {
         return [
             ['ip', null, 'This field cannot be left empty'],

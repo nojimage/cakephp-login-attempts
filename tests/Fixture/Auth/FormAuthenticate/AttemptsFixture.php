@@ -14,7 +14,7 @@ class AttemptsFixture extends BaseFixture
      *
      * @var array
      */
-    public $records = [
+    public array $records = [
         [
             'id' => 1,
             'ip' => '192.168.1.11',

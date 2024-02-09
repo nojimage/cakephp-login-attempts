@@ -18,26 +18,26 @@ class Plugin extends BasePlugin
      *
      * @var bool
      */
-    protected $bootstrapEnabled = false;
+    protected bool $bootstrapEnabled = false;
 
     /**
      * Enable middleware
      *
      * @var bool
      */
-    protected $middlewareEnabled = false;
+    protected bool $middlewareEnabled = false;
 
     /**
      * Load routes or not
      *
      * @var bool
      */
-    protected $routesEnabled = false;
+    protected bool $routesEnabled = false;
 
     /**
      * Console middleware
      *
      * @var bool
      */
-    protected $consoleEnabled = true;
+    protected bool $consoleEnabled = true;
 }
