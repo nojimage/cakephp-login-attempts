@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 use Cake\Cache\Cache;
 use Cake\Core\Configure;
+use Cake\TestSuite\Fixture\SchemaLoader;
+use Migrations\TestSuite\Migrator;
 
 /**
  * Test suite bootstrap for CakePHP Plugin.
@@ -27,8 +29,23 @@ unset($findRoot);
 
 $here = __DIR__;
 
+// Ensure default test connection is defined
+if (!getenv('DB_URL')) {
+    putenv('DB_URL=sqlite:///' . sys_get_temp_dir() . 'test.sqlite');
+}
+
 chdir($root);
 require $root . '/vendor/cakephp/cakephp/tests/bootstrap.php';
+
+// setup migration
+$schemaLoader = new SchemaLoader();
+$schemaLoader->loadInternalFile($here . '/schema.php');
+
+$migrator = new Migrator();
+$migrator->run([
+    'plugin' => 'LoginAttempts',
+    'skip' => ['auth_users'],
+]);
 
 Cache::clearAll();
 
