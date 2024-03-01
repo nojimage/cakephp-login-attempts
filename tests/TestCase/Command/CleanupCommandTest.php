@@ -5,7 +5,7 @@ namespace LoginAttempts\Test\TestCase\Command;
 
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
-use Cake\I18n\FrozenTime;
+use Cake\I18n\DateTime;
 use Cake\TestSuite\TestCase;
 use LoginAttempts\Command\CleanupCommand;
 use LoginAttempts\Model\Table\AttemptsTable;
@@ -78,11 +78,11 @@ class CleanupCommandTest extends TestCase
      */
     public function testMain(): void
     {
-        FrozenTime::setTestNow('2017-01-01 12:23:34');
+        DateTime::setTestNow('2017-01-01 12:23:34');
         $this->Cleanup->execute($this->args, $this->io);
         $this->assertCount(1, $this->Attempts->find()->all());
 
-        FrozenTime::setTestNow('2017-01-02 12:23:35');
+        DateTime::setTestNow('2017-01-02 12:23:35');
         $this->Cleanup->execute($this->args, $this->io);
         $this->assertCount(0, $this->Attempts->find()->all(), 'cleanup expired');
     }

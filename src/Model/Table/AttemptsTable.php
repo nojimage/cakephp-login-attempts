@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace LoginAttempts\Model\Table;
 
-use Cake\I18n\FrozenTime;
+use Cake\I18n\DateTime;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 use LoginAttempts\Model\Entity\Attempt;
@@ -89,8 +89,8 @@ class AttemptsTable extends Table implements AttemptsTableInterface
         $attempt = $this->newEntity([
             'ip' => $ip,
             'action' => $action,
-            'expires' => FrozenTime::parse($duration),
-            'created_at' => FrozenTime::now(),
+            'expires' => DateTime::parse($duration),
+            'created_at' => DateTime::now(),
         ]);
 
         return $this->save($attempt);
@@ -109,7 +109,7 @@ class AttemptsTable extends Table implements AttemptsTableInterface
         $count = $this->find()->where([
                 'ip' => $ip,
                 'action' => $action,
-                'expires >=' => FrozenTime::now(),
+                'expires >=' => DateTime::now(),
             ])->count();
 
         return $count < $limit;
@@ -138,7 +138,7 @@ class AttemptsTable extends Table implements AttemptsTableInterface
     public function cleanup(): int
     {
         return $this->deleteAll([
-                'expires <' => FrozenTime::now(),
+                'expires <' => DateTime::now(),
         ]);
     }
 }

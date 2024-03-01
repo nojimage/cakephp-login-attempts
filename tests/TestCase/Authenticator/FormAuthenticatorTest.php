@@ -6,7 +6,7 @@ namespace LoginAttempts\Test\TestCase\Authenticator;
 use Authentication\Authenticator\ResultInterface;
 use Authentication\Identifier\IdentifierInterface;
 use Cake\Http\ServerRequest;
-use Cake\I18n\FrozenTime;
+use Cake\I18n\DateTime;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Security;
 use Laminas\Diactoros\Uri;
@@ -78,7 +78,7 @@ class FormAuthenticatorTest extends TestCase
     {
         unset($this->auth, $this->Users, $this->Attempts);
         Security::setSalt($this->salt);
-        FrozenTime::setTestNow();
+        DateTime::setTestNow();
         parent::tearDown();
     }
 
@@ -101,8 +101,8 @@ class FormAuthenticatorTest extends TestCase
      */
     public function testAuthenticateNotLoginUrl(): void
     {
-        $now = FrozenTime::parse('2017-01-02 12:23:36');
-        FrozenTime::setTestNow($now);
+        $now = DateTime::parse('2017-01-02 12:23:36');
+        DateTime::setTestNow($now);
 
         $recordsBefore = $this->Attempts->find()->where(['ip' => '192.168.1.11', 'expires >=' => $now])->all();
         $this->assertLessThan(5, $recordsBefore->count());
@@ -125,8 +125,8 @@ class FormAuthenticatorTest extends TestCase
      */
     public function testAuthenticateCredentialsMissing(): void
     {
-        $now = FrozenTime::parse('2017-01-02 12:23:36');
-        FrozenTime::setTestNow($now);
+        $now = DateTime::parse('2017-01-02 12:23:36');
+        DateTime::setTestNow($now);
 
         $recordsBefore = $this->Attempts->find()->where(['ip' => '192.168.1.11', 'expires >=' => $now])->all();
         $this->assertLessThan(5, $recordsBefore->count());
@@ -146,7 +146,7 @@ class FormAuthenticatorTest extends TestCase
      */
     public function testAuthenticateFailure(): void
     {
-        FrozenTime::setTestNow('2017-01-01 12:23:34');
+        DateTime::setTestNow('2017-01-01 12:23:34');
 
         $request = $this->getRequest('/login', [
             'username' => 'foo',
@@ -171,7 +171,7 @@ class FormAuthenticatorTest extends TestCase
      */
     public function testAuthenticateLimitAttempts(): void
     {
-        FrozenTime::setTestNow('2017-01-01 12:23:34');
+        DateTime::setTestNow('2017-01-01 12:23:34');
 
         $request = $this->getRequest('/login', [
             'username' => 'foo',
@@ -182,7 +182,7 @@ class FormAuthenticatorTest extends TestCase
         $this->assertFalse($result->isValid());
 
         // expired
-        FrozenTime::setTestNow('2017-01-02 12:23:35');
+        DateTime::setTestNow('2017-01-02 12:23:35');
 
         $request = $this->getRequest('/login', [
             'username' => 'foo',
@@ -202,7 +202,7 @@ class FormAuthenticatorTest extends TestCase
      */
     public function testAuthenticateSuccess(): void
     {
-        FrozenTime::setTestNow('2017-01-01 12:23:34');
+        DateTime::setTestNow('2017-01-01 12:23:34');
 
         $result = $this->Attempts->find()->where(['ip' => '192.168.1.22'])->all();
         $this->assertNotNull($result);
