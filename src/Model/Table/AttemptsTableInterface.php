@@ -22,7 +22,7 @@ interface AttemptsTableInterface
      *
      * @param string $ip A request client ip.
      * @param string $action A request target action.
-     * @param int $limit Number of trial limitation.
+     * @param int $limit Number of trial limitations.
      * @return bool
      */
     public function check(string $ip, string $action, int $limit): bool;

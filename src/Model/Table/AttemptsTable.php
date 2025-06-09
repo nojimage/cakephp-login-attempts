@@ -7,7 +7,7 @@ use Cake\I18n\DateTime;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 use LoginAttempts\Model\Entity\Attempt;
-use function __d;
+use function Cake\I18n\__d;
 
 /**
  * Attempts Model
@@ -24,7 +24,7 @@ class AttemptsTable extends Table implements AttemptsTableInterface
     /**
      * Initialize method
      *
-     * @param array $config The configuration for the Table.
+     * @param array<string, mixed> $config The configuration for the Table.
      * @return void
      */
     public function initialize(array $config): void
@@ -101,7 +101,7 @@ class AttemptsTable extends Table implements AttemptsTableInterface
      *
      * @param string $ip A request client ip.
      * @param string $action A request target action.
-     * @param int $limit Number of trial limitation.
+     * @param int $limit Number of trial limitations.
      * @return bool
      */
     public function check(string $ip, string $action, int $limit): bool

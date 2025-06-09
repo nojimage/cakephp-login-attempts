@@ -7,6 +7,7 @@ use Cake\I18n\DateTime;
 use Cake\TestSuite\TestCase;
 use LoginAttempts\Model\Entity\Attempt;
 use LoginAttempts\Model\Table\AttemptsTable;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * LoginAttempts\Model\Table\AttemptsTable Test Case
@@ -52,9 +53,8 @@ class AttemptsTableTest extends TestCase
 
     /**
      * Test validationDefault method
-     *
-     * @dataProvider dataValidation
      */
+    #[DataProvider('dataValidation')]
     public function testValidation($field, $data, $expects): void
     {
         $entity = $this->Attempts->newEntity([

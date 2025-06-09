@@ -17,9 +17,7 @@ use Cake\ORM\Entity;
 class Attempt extends Entity
 {
     /**
-     * Fields that can be mass assigned using newEntity() or patchEntity().
-     *
-     * @var array
+     * @inheritDoc
      */
     protected array $_accessible = [
         'ip' => true,
