@@ -27,7 +27,7 @@ You can install this plugin into your CakePHP application using [composer](http:
 The recommended way to install composer packages is:
 
 ```
-composer require nojimage/cakephp-login-attempts"^3.0
+composer require nojimage/cakephp-login-attempts:^3.0
 ```
 
 ### Load plugin
@@ -40,7 +40,7 @@ $this->addPlugin('LoginAttempts');
 
 ### Create table
 
-run migration command:
+Run migration command:
 
 ```
 bin/cake migrations migrate -p LoginAttempts
@@ -50,7 +50,7 @@ bin/cake migrations migrate -p LoginAttempts
 
 Use `LoginAttempts.Form` authenticator instead of `Form`.
 
-If use are using Authentication plugin:
+If you are using `Authentication` plugin:
 
 ```
         $service->loadAuthenticator('LoginAttempts.Form', [
@@ -64,14 +64,14 @@ If use are using Authentication plugin:
 
 #### `attemptLimit`
 
-If the num of login failures of the user exceeds `attemptLimit` during `attemptDuration`,
+If the number of login failures exceeds `attemptLimit` during `attemptDuration`,
 the user's login is not permitted.
 
 default: `5`
 
 #### `attemptDuration`
 
-If the num of login failures of the user exceeds `attemptLimit` during `attemptDuration`,
+If the number of login failures exceeds `attemptLimit` during `attemptDuration`,
 the user's login is not permitted.
 
 default: `'+5 minutes'`
@@ -85,6 +85,6 @@ default: `'login'`
 
 #### `attemptsStorageModel`
 
-A model used for logging a failure login and check count of failure login.
+A model used for logging login failures and checking the count of failed login attempts.
 
 default: `'LoginAttempts.Attempts'`
