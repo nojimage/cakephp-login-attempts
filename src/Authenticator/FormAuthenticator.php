@@ -23,7 +23,7 @@ class FormAuthenticator extends BaseFormAuthenticator
      * construct
      *
      * @param \Authentication\Identifier\IdentifierInterface $identifier Identifier or identifiers collection.
-     * @param array $config Array of config to use.
+     * @param array<string, mixed> $config Array of config to use.
      */
     public function __construct(IdentifierInterface $identifier, array $config = [])
     {
@@ -48,7 +48,7 @@ class FormAuthenticator extends BaseFormAuthenticator
     }
 
     /**
-     * authenticate & check attempt counts
+     * authenticate and check attempt counts
      *
      * @param \Cake\Http\ServerRequest $request The request that contains login information.
      * @return \Authentication\Authenticator\ResultInterface
@@ -77,10 +77,17 @@ class FormAuthenticator extends BaseFormAuthenticator
     }
 
     /**
-     * @return Table|\LoginAttempts\Model\Table\AttemptsTableInterface
+     * @return \Cake\ORM\Table&\LoginAttempts\Model\Table\AttemptsTableInterface
      */
-    protected function getAttemptsTable(): Table|AttemptsTableInterface
+    protected function getAttemptsTable(): Table&AttemptsTableInterface
     {
-        return $this->fetchTable($this->getConfig('attemptsStorageModel'));
+        $table = $this->fetchTable($this->getConfig('attemptsStorageModel'));
+
+        assert(
+            $table instanceof AttemptsTableInterface,
+            'The attempts storage model must implement AttemptsTableInterface.',
+        );
+
+        return $table;
     }
 }

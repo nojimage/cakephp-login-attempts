@@ -32,7 +32,9 @@ class CleanupCommand extends Command
      */
     public function execute(Arguments $args, ConsoleIo $io)
     {
+        // @phpstan-ignore-next-line
         $this->fetchTable('LoginAttempts.Attempts')->cleanup();
+
         $io->out('Cleaning up attempts table.');
     }
 }
