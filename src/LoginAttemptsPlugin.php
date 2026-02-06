@@ -11,7 +11,7 @@ use Cake\Core\BasePlugin;
 /**
  * Plugin class for CakePHP.
  */
-class Plugin extends BasePlugin
+class LoginAttemptsPlugin extends BasePlugin
 {
     /**
      * Do bootstrapping or not

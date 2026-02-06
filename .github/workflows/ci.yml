@@ -16,8 +16,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        cakephp-version: ['5.0.*', '5.1.*', '5.2.*']
-        php-version: ['8.2', '8.3', '8.4']
+        cakephp-version: ['5.0.*', '5.1.*', '5.2.*', '5.3.*']
+        php-version: ['8.2', '8.3', '8.4', '8.5']
         db-type: ['mysql']
         prefer-lowest: ['']
         coverage: ['no']
@@ -27,14 +27,8 @@ jobs:
             db-type: 'mysql:8.0'
             prefer-lowest: 'prefer-lowest'
             coverage: 'no'
-          - cakephp-version: '5.2.*'
-            php-version: '8.4'
-            db-type: 'mysql'
-            prefer-lowest: ''
-            coverage: 'no'
-
-          - php-version: '8.4'
-            cakephp-version: '5.2.*'
+          - php-version: '8.5'
+            cakephp-version: '5.3.*'
             db-type: 'mysql'
             prefer-lowest: ''
             coverage: 'coverage'
@@ -119,7 +113,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.4'
+          php-version: '8.5'
           extensions: mbstring, intl, apcu
           coverage: none
 
