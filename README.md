@@ -32,10 +32,10 @@ composer require nojimage/cakephp-login-attempts:^3.0
 
 ### Load plugin
 
-Load the plugin by adding the following statement in your project's `src/Application.php`:
+Run the following command:
 
 ```
-$this->addPlugin('LoginAttempts');
+bin/cake plugin load LoginAttempts
 ```
 
 ### Create table

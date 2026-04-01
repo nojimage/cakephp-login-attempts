@@ -34,10 +34,10 @@ composer require nojimage/cakephp-login-attempts:^3.0
 
 ### プラグインのロード
 
-アプリケーションの `src/Application.php` に、次の行を追加してプラグインをロードします:
+次のコマンドを実行してプラグインをロードします:
 
 ```
-$this->addPlugin('LoginAttempts');
+bin/cake plugin load LoginAttempts
 ```
 
 ### テーブルの作成
