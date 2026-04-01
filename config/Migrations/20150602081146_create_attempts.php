@@ -1,8 +1,13 @@
 <?php
 
-use Phinx\Migration\AbstractMigration;
+// cakephp/migrations 4.x uses Phinx, 5.x uses Migrations\BaseMigration
+if (class_exists('Migrations\BaseMigration')) {
+    class_alias('Migrations\BaseMigration', 'CreateAttemptsBase');
+} else {
+    class_alias('Phinx\Migration\AbstractMigration', 'CreateAttemptsBase');
+}
 
-class CreateAttempts extends AbstractMigration
+class CreateAttempts extends CreateAttemptsBase
 {
 
     /**
