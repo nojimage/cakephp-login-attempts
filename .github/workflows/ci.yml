@@ -51,7 +51,6 @@ jobs:
         with:
           php-version: ${{ matrix.php-version }}
           extensions: mbstring, intl, apcu, sqlite, pdo_${{ matrix.db-type }}
-          ini-values: apc.enable_cli = 1
           coverage: xdebug
 
       - name: Get composer cache directory
