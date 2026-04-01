@@ -22,7 +22,7 @@
 
 ## Installation
 
-You can install this plugin into your CakePHP application using [composer](http://getcomposer.org).
+You can install this plugin into your CakePHP application using [composer](https://getcomposer.org).
 
 The recommended way to install composer packages is:
 
@@ -52,12 +52,12 @@ Use `LoginAttempts.Form` authenticator instead of `Form`.
 
 If you are using `Authentication` plugin:
 
-```
-        $service->loadAuthenticator('LoginAttempts.Form', [
-            'fields' => ['username' => 'email'],
-            'attemptLimit' => 5,
-            'attemptDuration' => '+5 minutes',
-        ]);
+```php
+$service->loadAuthenticator('LoginAttempts.Form', [
+    'fields' => ['username' => 'email'],
+    'attemptLimit' => 5,
+    'attemptDuration' => '+5 minutes',
+]);
 ```
 
 ### LoginAttempts.Form Options

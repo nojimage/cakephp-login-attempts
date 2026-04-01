@@ -24,7 +24,7 @@
 
 ## インストール
 
-[composer](http://getcomposer.org) を使用してインストールできます。
+[composer](https://getcomposer.org) を使用してインストールできます。
 
 以下のようにして、Composer経由でプラグインをCakePHPアプリケーションへ追加します:
 
@@ -54,12 +54,12 @@ bin/cake migrations migrate -p LoginAttempts
 
 Authentication プラグインを使う場合:
 
-```
-        $service->loadAuthenticator('LoginAttempts.Form', [
-            'fields' => ['username' => 'email'],
-            'attemptLimit' => 5,
-            'attemptDuration' => '+5 minutes',
-        ]);
+```php
+$service->loadAuthenticator('LoginAttempts.Form', [
+    'fields' => ['username' => 'email'],
+    'attemptLimit' => 5,
+    'attemptDuration' => '+5 minutes',
+]);
 ```
 
 ### LoginAttempts.Form のオプション
