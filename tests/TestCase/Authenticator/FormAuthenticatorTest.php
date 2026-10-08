@@ -29,11 +29,6 @@ class FormAuthenticatorTest extends TestCase
     ];
 
     /**
-     * @var IdentifierInterface
-     */
-    private IdentifierInterface $identifier;
-
-    /**
      * @var FormAuthenticator
      */
     private FormAuthenticator $auth;
@@ -54,14 +49,7 @@ class FormAuthenticatorTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->identifier = $this->getMockBuilder(IdentifierInterface::class)->getMock();
-        $this->identifier
-            ->method('getErrors')
-            ->willReturn([]);
-        $this->auth = new FormAuthenticator($this->identifier, [
-            'loginUrl' => '/login',
-            'userModel' => 'AuthUsers',
-        ]);
+        $this->auth = $this->createAuthenticator($this->createStub(IdentifierInterface::class));
 
         // set password
         /** @noinspection PhpFieldAssignmentTypeMismatchInspection */
@@ -80,6 +68,32 @@ class FormAuthenticatorTest extends TestCase
         Security::setSalt($this->salt);
         DateTime::setTestNow();
         parent::tearDown();
+    }
+
+    /**
+     * @param IdentifierInterface $identifier the identifier
+     * @return FormAuthenticator
+     */
+    private function createAuthenticator(IdentifierInterface $identifier): FormAuthenticator
+    {
+        return new FormAuthenticator($identifier, [
+            'loginUrl' => '/login',
+            'userModel' => 'AuthUsers',
+        ]);
+    }
+
+    /**
+     * @param array $user identify result
+     * @return FormAuthenticator
+     */
+    private function createAuthenticatorIdentifyOnce(array $user): FormAuthenticator
+    {
+        $identifier = $this->createMock(IdentifierInterface::class);
+        $identifier->expects($this->once())
+            ->method('identify')
+            ->willReturn($user);
+
+        return $this->createAuthenticator($identifier);
     }
 
     /**
@@ -190,9 +204,7 @@ class FormAuthenticatorTest extends TestCase
         ]);
 
         $user = ['id' => 1, 'username' => 'foo'];
-        $this->identifier->expects($this->once())
-            ->method('identify')
-            ->willReturn($user);
+        $this->auth = $this->createAuthenticatorIdentifyOnce($user);
         $result = $this->auth->authenticate($request);
         $this->assertSame($user, $result->getData());
     }
@@ -214,9 +226,7 @@ class FormAuthenticatorTest extends TestCase
         ], '192.168.1.22');
 
         $user = ['id' => 1, 'username' => 'foo'];
-        $this->identifier->expects($this->once())
-            ->method('identify')
-            ->willReturn($user);
+        $this->auth = $this->createAuthenticatorIdentifyOnce($user);
         $result = $this->auth->authenticate($request);
         $this->assertTrue($result->isValid());
 

@@ -35,14 +35,14 @@ class CleanupCommandTest extends TestCase
     private CleanupCommand $Cleanup;
 
     /**
-     * @var Arguments&\PHPUnit\Framework\MockObject\MockObject|\PHPUnit\Framework\MockObject\MockObject
+     * @var Arguments
      */
-    private $args;
+    private Arguments $args;
 
     /**
-     * @var ConsoleIo&\PHPUnit\Framework\MockObject\MockObject|\PHPUnit\Framework\MockObject\MockObject
+     * @var ConsoleIo
      */
-    private $io;
+    private ConsoleIo $io;
 
     /**
      * setUp method
@@ -52,8 +52,8 @@ class CleanupCommandTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->io = $this->getMockBuilder(ConsoleIo::class)->getMock();
-        $this->args = $this->getMockBuilder(Arguments::class)->disableOriginalConstructor()->getMock();
+        $this->io = $this->createStub(ConsoleIo::class);
+        $this->args = $this->createStub(Arguments::class);
         $this->Cleanup = new CleanupCommand();
         /** @noinspection PhpFieldAssignmentTypeMismatchInspection */
         $this->Attempts = $this->fetchTable('Attempts', ['className' => AttemptsTable::class]);
