@@ -12,10 +12,10 @@ use function Cake\I18n\__d;
 /**
  * Attempts Model
  *
- * @method \LoginAttempts\Model\Entity\Attempt newEntity($data = null, array $options = [])
- * @method \LoginAttempts\Model\Entity\Attempt[] newEntities(array $data, array $options = [])
- * @method \LoginAttempts\Model\Entity\Attempt patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \LoginAttempts\Model\Entity\Attempt[] patchEntities($entities, array $data, array $options = [])
+ * @method \LoginAttempts\Model\Entity\Attempt newEntity($data = null, array<string, mixed> $options = [])
+ * @method \LoginAttempts\Model\Entity\Attempt[] newEntities(array<array<string, mixed>> $data, array<string, mixed> $options = [])
+ * @method \LoginAttempts\Model\Entity\Attempt patchEntity(\Cake\Datasource\EntityInterface $entity, array<string, mixed> $data, array<string, mixed> $options = [])
+ * @method \LoginAttempts\Model\Entity\Attempt[] patchEntities($entities, array<array<string, mixed>> $data, array<string, mixed> $options = [])
  * @method \LoginAttempts\Model\Entity\Attempt get($primaryKey, $options = [])
  * @method \LoginAttempts\Model\Entity\Attempt|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  */
