@@ -17,7 +17,7 @@
 
 ## Requirements
 
-- CakePHP >= 5.0
+- CakePHP >= 5.1
 - [CakePHP Authentication plugin](https://github.com/cakephp/authentication) 3.x or 4.x
 
 ## Installation
