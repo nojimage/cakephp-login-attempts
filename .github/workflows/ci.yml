@@ -16,22 +16,29 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        cakephp-version: ['5.0.*', '5.1.*', '5.2.*', '5.3.*']
+        cakephp-version: ['5.1.*', '5.2.*', '5.3.*', '5.4.*']
         php-version: ['8.2', '8.3', '8.4', '8.5']
         db-type: ['mysql']
         prefer-lowest: ['']
         coverage: ['no']
+        authentication-version: ['']
         include:
-          - cakephp-version: '5.0.*'
+          - cakephp-version: '5.1.*'
             php-version: '8.1'
             db-type: 'mysql:8.0'
             prefer-lowest: 'prefer-lowest'
             coverage: 'no'
           - php-version: '8.5'
-            cakephp-version: '5.3.*'
+            cakephp-version: '5.4.*'
             db-type: 'mysql'
             prefer-lowest: ''
             coverage: 'coverage'
+          - php-version: '8.5'
+            cakephp-version: '5.4.*'
+            db-type: 'mysql'
+            prefer-lowest: ''
+            coverage: 'no'
+            authentication-version: '3.*'
 
     steps:
       - name: Setup MySQL latest
@@ -70,6 +77,11 @@ jobs:
       - name: Change CakePHP version
         run: |
           composer require cakephp/cakephp:${{ matrix.cakephp-version }}
+
+      - name: Change Authentication version
+        if: matrix.authentication-version != ''
+        run: |
+          composer require cakephp/authentication:${{ matrix.authentication-version }}
 
       - name: Composer install
         run: |

@@ -22,10 +22,11 @@ class FormAuthenticator extends BaseFormAuthenticator
     /**
      * construct
      *
-     * @param \Authentication\Identifier\IdentifierInterface $identifier Identifier or identifiers collection.
+     * @param \Authentication\Identifier\IdentifierInterface|null $identifier Identifier or identifiers collection.
+     *   Authentication 4.x passes null when no identifier is configured; 3.x does not accept null.
      * @param array<string, mixed> $config Array of config to use.
      */
-    public function __construct(IdentifierInterface $identifier, array $config = [])
+    public function __construct(?IdentifierInterface $identifier = null, array $config = [])
     {
         $this->_defaultConfig += [
             'userModel' => 'Users',

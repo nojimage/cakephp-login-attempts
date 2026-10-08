@@ -3,5 +3,11 @@ parameters:
     treatPhpDocTypesAsCertain: false
     paths:
         - src/
-    excludePaths:
-        - test_app/
+    ignoreErrors:
+        # Authentication 3.x does not accept a null identifier, but its AuthenticatorCollection never passes null.
+        # Authentication 4.x accepts null, so this error is only reported when analysing against 3.x.
+        -
+            message: '#^Parameter \#1 \$identifier of method Authentication\\Authenticator\\AbstractAuthenticator::__construct\(\) expects Authentication\\Identifier\\IdentifierInterface, Authentication\\Identifier\\IdentifierInterface\|null given\.$#'
+            identifier: argument.type
+            path: src/Authenticator/FormAuthenticator.php
+            reportUnmatched: false
