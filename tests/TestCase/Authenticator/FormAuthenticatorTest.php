@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace LoginAttempts\Test\TestCase\Authenticator;
 
+use Authentication\AuthenticationService;
 use Authentication\Authenticator\ResultInterface;
 use Authentication\Identifier\IdentifierInterface;
 use Cake\Http\ServerRequest;
@@ -233,5 +234,18 @@ class FormAuthenticatorTest extends TestCase
         // created attempt record on auth failure
         $record = $this->Attempts->find()->where(['ip' => '192.168.1.2'])->all();
         $this->assertCount(0, $record, 'reset attempt record on auth success');
+    }
+
+    /**
+     * test loading via AuthenticationService without identifier config
+     */
+    public function testLoadAuthenticatorWithoutIdentifier(): void
+    {
+        $service = new AuthenticationService();
+
+        $authenticator = $service->loadAuthenticator('LoginAttempts.Form', ['loginUrl' => '/login']);
+
+        $this->assertInstanceOf(FormAuthenticator::class, $authenticator);
+        $this->assertInstanceOf(IdentifierInterface::class, $authenticator->getIdentifier());
     }
 }

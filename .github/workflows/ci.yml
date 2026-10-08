@@ -21,6 +21,7 @@ jobs:
         db-type: ['mysql']
         prefer-lowest: ['']
         coverage: ['no']
+        authentication-version: ['']
         include:
           - cakephp-version: '5.0.*'
             php-version: '8.1'
@@ -32,6 +33,12 @@ jobs:
             db-type: 'mysql'
             prefer-lowest: ''
             coverage: 'coverage'
+          - php-version: '8.5'
+            cakephp-version: '5.4.*'
+            db-type: 'mysql'
+            prefer-lowest: ''
+            coverage: 'no'
+            authentication-version: '3.*'
 
     steps:
       - name: Setup MySQL latest
@@ -70,6 +77,11 @@ jobs:
       - name: Change CakePHP version
         run: |
           composer require cakephp/cakephp:${{ matrix.cakephp-version }}
+
+      - name: Change Authentication version
+        if: matrix.authentication-version != ''
+        run: |
+          composer require cakephp/authentication:${{ matrix.authentication-version }}
 
       - name: Composer install
         run: |
